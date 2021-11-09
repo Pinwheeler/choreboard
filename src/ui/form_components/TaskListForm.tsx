@@ -1,5 +1,5 @@
 import { DatePicker, TimePicker } from "@mui/lab"
-import { Button, Stack } from "@mui/material"
+import { Button, Grid, useTheme } from "@mui/material"
 import { useField } from "formik"
 import { DateTime } from "luxon"
 import React from "react"
@@ -55,33 +55,72 @@ const TaskItemForm: React.FC<Props> = (props) => {
     tasksHelper.setValue(updatedList)
   }
 
+  const theme = useTheme()
+
   return (
-    <Stack direction="row" spacing={1}>
-      <TextField name={`tasks[${index}].name`} label="Task Name" />
-      <DatePicker
-        onChange={onDateChange}
-        value={dateField.value ?? null}
-        renderInput={(props) => (
-          <TextField
-            name={`tasks[${index}].dueDateDate`}
-            {...props}
-            label="Task Deadline (optional)"
-          />
-        )}
-      />
-      <TimePicker
-        value={dateField.value ?? null}
-        onChange={onDateChange}
-        renderInput={(props) => (
-          <TextField
-            name={`tasks[${index}].dueDateTime`}
-            {...props}
-            label="Task Deadline (optional)"
-          />
-        )}
-      />
-      <PriorityComponent index={index} />
-      <Button onClick={onDelete}>Delete</Button>
-    </Stack>
+    <Grid
+      container
+      direction="row"
+      spacing={2}
+      style={{
+        padding: 10,
+        marginBottom: 10,
+        width: "100%",
+        backgroundColor: theme.palette.grey[100],
+        borderRadius: 5,
+      }}
+    >
+      <Grid item xs={12} sm={12} md={1}>
+        {`Task #${index + 1}`}
+      </Grid>
+      <Grid item xs={12} sm={12} md={3}>
+        <TextField
+          style={{ width: "100%" }}
+          name={`tasks[${index}].name`}
+          label="Task Name"
+        />
+      </Grid>
+      <Grid item xs={12} sm={12} md={2}>
+        <DatePicker
+          onChange={onDateChange}
+          value={dateField.value ?? null}
+          renderInput={(props) => (
+            <TextField
+              style={{ width: "100%" }}
+              name={`tasks[${index}].dueDateDate`}
+              {...props}
+              label="Deadline*"
+            />
+          )}
+        />
+      </Grid>
+      <Grid item xs={12} sm={12} md={2}>
+        <TimePicker
+          value={dateField.value ?? null}
+          onChange={onDateChange}
+          renderInput={(props) => (
+            <TextField
+              style={{ width: "100%" }}
+              name={`tasks[${index}].dueDateTime`}
+              {...props}
+              label="Deadline*"
+            />
+          )}
+        />
+      </Grid>
+      <Grid item xs={12} sm={12} md={2}>
+        <PriorityComponent index={index} />
+      </Grid>
+      <Grid item xs={12} sm={12} md={2}>
+        <Button
+          color="error"
+          variant="contained"
+          style={{ width: "100%" }}
+          onClick={onDelete}
+        >
+          {`Delete Task #${index + 1}`}
+        </Button>
+      </Grid>
+    </Grid>
   )
 }

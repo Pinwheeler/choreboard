@@ -1,18 +1,17 @@
-import { Container, Typography } from "@mui/material";
-import * as firebaseAuth from "firebase/auth";
-import React, { useCallback, useContext, useEffect, useMemo } from "react";
-import { Helmet } from "react-helmet";
-import { FirebaseContext } from "../../core/contexts/FirebaseContext";
+import { Container, Typography } from "@mui/material"
+import * as firebaseAuth from "firebase/auth"
+import React, { useCallback, useContext, useEffect, useMemo } from "react"
+import { Helmet } from "react-helmet"
+import { FirebaseContext } from "../../core/contexts/FirebaseContext"
 
-const firebaseUIContainerID = "firebaseui-auth-container";
+const firebaseUIContainerID = "firebaseui-auth-container"
 
 export const SplashPage: React.FC = () => {
-  const { loginUI } = useContext(FirebaseContext);
+  const { loginUI } = useContext(FirebaseContext)
 
   const signInSuccess = useCallback((result: any) => {
-    console.log("======== result", result);
-    return false;
-  }, []);
+    return false
+  }, [])
 
   // Configure FirebaseUI.
   const uiConfig: firebaseui.auth.Config = useMemo(
@@ -27,11 +26,11 @@ export const SplashPage: React.FC = () => {
       ],
     }),
     [signInSuccess]
-  );
+  )
 
   useEffect(() => {
-    loginUI.start(`#${firebaseUIContainerID}`, uiConfig);
-  }, [loginUI, uiConfig]);
+    loginUI.start(`#${firebaseUIContainerID}`, uiConfig)
+  }, [loginUI, uiConfig])
 
   return (
     <>
@@ -47,5 +46,5 @@ export const SplashPage: React.FC = () => {
       </Container>
       <div id={firebaseUIContainerID} />
     </>
-  );
-};
+  )
+}

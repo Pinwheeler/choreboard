@@ -16,10 +16,18 @@ export const RepeatCadenceSelector: React.FC = () => {
       value={field.value}
       onChange={onChange}
       exclusive
+      style={{ width: "100%", height: "100%" }}
     >
-      <ToggleButton value={RecurrenceCadence.none}>None</ToggleButton>
-      <ToggleButton value={RecurrenceCadence.weekly}>Weekly</ToggleButton>
-      <ToggleButton value={RecurrenceCadence.onWeekday}>
+      <ToggleButton style={{ width: "100%" }} value={RecurrenceCadence.none}>
+        None
+      </ToggleButton>
+      <ToggleButton style={{ width: "100%" }} value={RecurrenceCadence.weekly}>
+        Weekly
+      </ToggleButton>
+      <ToggleButton
+        style={{ width: "100%" }}
+        value={RecurrenceCadence.onWeekday}
+      >
         On Weekday
       </ToggleButton>
     </ToggleButtonGroup>

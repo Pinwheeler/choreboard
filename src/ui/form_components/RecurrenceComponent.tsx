@@ -12,11 +12,9 @@ import { OnWeekdayRecurrence } from "./OnWeekdayRecurrenceComponent"
 export const RecurrenceComponent: React.FC = () => {
   const [field, meta, helper] = useField<RecurrenceCadence>("recurring")
 
-  console.log(field)
-
   switch (field.value) {
     case RecurrenceCadence.weekly:
-      return <MonthlyRecurrence />
+      return <WeeklyRecurrence />
     case RecurrenceCadence.onWeekday:
       return <OnWeekdayRecurrence />
     default:
@@ -24,7 +22,7 @@ export const RecurrenceComponent: React.FC = () => {
   }
 }
 
-const MonthlyRecurrence: React.FC = () => {
+const WeeklyRecurrence: React.FC = () => {
   const [field, meta, helper] = useField<number>("repeatWeekly")
 
   const onChange = (_event: any, value: number) => {
@@ -32,8 +30,10 @@ const MonthlyRecurrence: React.FC = () => {
   }
 
   return (
-    <Stack direction="row">
-      <Typography>Repeat every # of weeks: </Typography>
+    <Stack direction="row" style={{ marginTop: 10 }} alignItems="center">
+      <Typography style={{ marginRight: 15 }}>
+        Repeat every # of weeks:{" "}
+      </Typography>
       <ToggleButtonGroup
         color="primary"
         value={field.value}
