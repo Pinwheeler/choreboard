@@ -1,4 +1,3 @@
-import { User } from "@firebase/auth"
 import { DateTime } from "luxon"
 import { UpcertTask } from "./Task.form"
 
@@ -8,7 +7,7 @@ export interface UpcertProject {
   recurring: RecurrenceCadence
   repeatWeekly: number
   repeatOnWeekday: Weekday[]
-  owner: User
+  ownerId: string
   tasks: UpcertTask[]
 }
 

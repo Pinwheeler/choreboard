@@ -3,6 +3,8 @@ import { Button, Grid, Stack, Typography, useTheme } from "@mui/material"
 import { Formik } from "formik"
 import { DateTime } from "luxon"
 import React, { useContext, useMemo } from "react"
+import * as yup from "yup"
+import { ApiContext } from "../../../core/contexts/ApiContext"
 import {
   RecurrenceCadence,
   UpcertProject,
@@ -15,9 +17,17 @@ import { TextField } from "../../form_components/TextField"
 
 export const NewProjectPage: React.FC = () => {
   const { user } = useContext(AuthContext)
+  const { createProject } = useContext(ApiContext)
 
   const formSubmit = (value: UpcertProject) => {
     console.log("====== submitting", value)
+    createProject(value)
+      .then((value) => {
+        console.log("+++++ success!", value)
+      })
+      .catch((error) => {
+        console.log("-----", error)
+      })
   }
 
   const initialValues: UpcertProject = useMemo(
@@ -26,13 +36,29 @@ export const NewProjectPage: React.FC = () => {
       recurring: RecurrenceCadence.none,
       repeatWeekly: 1,
       repeatOnWeekday: [],
-      owner: user,
+      ownerId: user.uid,
       tasks: [],
     }),
     [user]
   )
 
   const theme = useTheme()
+
+  const validationSchema = yup.object({
+    name: yup.string().required("Name is required"),
+    dueDate: yup.string(),
+    recurring: yup.string().matches(/none|weekly|onWeekday/),
+    repeatWeekly: yup.number(),
+    repeatOnWeekday: yup.array(),
+    owner: yup.object({}),
+    tasks: yup.array().of(
+      yup.object({
+        name: yup.string().required(),
+        dueDate: yup.string(),
+        priority: yup.number(),
+      })
+    ),
+  })
 
   return (
     <Stack spacing={2}>
