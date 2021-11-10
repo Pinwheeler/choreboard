@@ -3,6 +3,7 @@ import { Button, Grid, Stack, Typography, useTheme } from "@mui/material"
 import { Formik } from "formik"
 import { DateTime } from "luxon"
 import React, { useContext, useMemo } from "react"
+import { useParams } from "react-router"
 import * as yup from "yup"
 import { ApiContext } from "../../../core/contexts/ApiContext"
 import {
@@ -18,6 +19,7 @@ import { TextField } from "../../form_components/TextField"
 export const NewProjectPage: React.FC = () => {
   const { user } = useContext(AuthContext)
   const { createProject } = useContext(ApiContext)
+  const { guildId } = useParams<{ guildId?: string }>()
 
   const formSubmit = (value: UpcertProject) => {
     console.log("====== submitting", value)
@@ -33,13 +35,14 @@ export const NewProjectPage: React.FC = () => {
   const initialValues: UpcertProject = useMemo(
     () => ({
       name: "",
+      guild: `guilds/${guildId}`,
       recurring: RecurrenceCadence.none,
       repeatWeekly: 1,
       repeatOnWeekday: [],
       ownerId: user.uid,
       tasks: [],
     }),
-    [user]
+    [guildId, user.uid]
   )
 
   const theme = useTheme()

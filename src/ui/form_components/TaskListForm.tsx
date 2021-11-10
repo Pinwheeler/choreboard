@@ -4,7 +4,7 @@ import { useField } from "formik"
 import { DateTime } from "luxon"
 import React from "react"
 import { emptyUpcertTask, UpcertTask } from "../../core/forms/Task.form"
-import { Priority } from "../../core/models/Priority"
+import { Priority } from "../../core/models/Priority.guild"
 import { PriorityComponent } from "./PriorityComponent"
 import { TextField } from "./TextField"
 

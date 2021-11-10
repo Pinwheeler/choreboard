@@ -1,7 +1,7 @@
 import { Rating, Stack, Typography } from "@mui/material"
 import { useField } from "formik"
 import React from "react"
-import { Priority } from "../../core/models/Priority"
+import { Priority } from "../../core/models/Priority.guild"
 
 interface Props {
   index: number

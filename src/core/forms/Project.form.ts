@@ -3,6 +3,7 @@ import { UpcertTask } from "./Task.form"
 
 export interface UpcertProject {
   name: string
+  guild: string
   dueDate?: DateTime
   recurring: RecurrenceCadence
   repeatWeekly: number
