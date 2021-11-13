@@ -15,18 +15,20 @@ import { TextField } from "../../form_components/TextField"
 
 export const NewQuestPage: React.FC = () => {
   const { user } = useContext(AuthContext)
-  const { createQuest: createProject } = useContext(ApiContext)
+  const { createQuest } = useContext(ApiContext)
   const { guildId } = useParams<{ guildId?: string }>()
 
   const formSubmit = (value: UpcertQuest) => {
-    console.log("====== submitting", value)
-    createProject(value)
-      .then((value) => {
-        console.log("+++++ success!", value)
-      })
-      .catch((error) => {
-        console.log("-----", error)
-      })
+    if (guildId) {
+      console.log("====== submitting", value)
+      createQuest(value, guildId)
+        .then((value) => {
+          console.log("+++++ success!", value)
+        })
+        .catch((error) => {
+          console.log("-----", error)
+        })
+    }
   }
 
   const initialValues: UpcertQuest = useMemo(

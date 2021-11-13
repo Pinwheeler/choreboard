@@ -5,7 +5,7 @@ import { GuildModel } from "../models/Guild.model"
 import { FirebaseContext } from "./FirebaseContext"
 
 interface IApiContext {
-  createQuest: (form: UpcertQuest) => Promise<void>
+  createQuest: (form: UpcertQuest, guildId: string) => Promise<void>
   guilds: { [key: string]: GuildModel }
 }
 
@@ -15,9 +15,9 @@ export const ApiProvider: React.FC = (props) => {
   const [guilds, setGuilds] = useState<{ [key: string]: GuildModel }>({})
   const { db } = useContext(FirebaseContext)
 
-  const createQuest = (form: UpcertQuest) => {
+  const createQuest = (form: UpcertQuest, guildId: string) => {
     const dto = UpcertQuestDTO(form)
-    return set(ref(db, "quests/" + dto.id), dto)
+    return set(ref(db, `guilds/${guildId}/quests/` + dto.id), dto)
   }
 
   useEffect(() => {
