@@ -7,7 +7,7 @@ import {
 } from "@mui/material"
 import { useField } from "formik"
 import React from "react"
-import { Weekday } from "../../core/forms/Project.form"
+import { Weekday } from "../../core/forms/Quest.form"
 
 export const OnWeekdayRecurrence: React.FC = () => {
   const [field, meta, helper] = useField<Weekday[]>("repeatOnWeekday")

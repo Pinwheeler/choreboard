@@ -2,7 +2,7 @@ import { Analytics, getAnalytics } from "firebase/analytics"
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app"
 import { Auth, getAuth } from "firebase/auth"
-import { Firestore, getFirestore } from "firebase/firestore"
+import { Database, getDatabase } from "firebase/database"
 import * as firebaseui from "firebaseui"
 import React from "react"
 
@@ -15,6 +15,7 @@ const firebaseConfig = {
   storageBucket: "choreboard-e2e72.appspot.com",
   messagingSenderId: "448488161545",
   appId: "1:448488161545:web:726c2df735773b153113d8",
+  databaseURL: "https://choreboard-e2e72-default-rtdb.firebaseio.com/",
   measurementId: "G-CFX9D9J6GK",
 }
 
@@ -22,7 +23,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 const analytics = getAnalytics(app)
 const auth = getAuth(app)
-const db = getFirestore()
+const db = getDatabase(app)
 
 const loginUI = new firebaseui.auth.AuthUI(auth)
 
@@ -30,7 +31,7 @@ interface IFirebaseContext {
   loginUI: firebaseui.auth.AuthUI
   analytics: Analytics
   auth: Auth
-  db: Firestore
+  db: Database
 }
 
 export const FirebaseContext = React.createContext({} as IFirebaseContext)

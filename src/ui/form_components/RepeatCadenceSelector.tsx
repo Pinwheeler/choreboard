@@ -1,7 +1,7 @@
 import { ToggleButton, ToggleButtonGroup } from "@mui/material"
 import { useField } from "formik"
 import React from "react"
-import { RecurrenceCadence } from "../../core/forms/Project.form"
+import { RecurrenceCadence } from "../../core/forms/Quest.form"
 
 export const RepeatCadenceSelector: React.FC = () => {
   const [field, meta, helper] = useField<RecurrenceCadence>("recurring")

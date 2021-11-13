@@ -6,22 +6,19 @@ import React, { useContext, useMemo } from "react"
 import { useParams } from "react-router"
 import * as yup from "yup"
 import { ApiContext } from "../../../core/contexts/ApiContext"
-import {
-  RecurrenceCadence,
-  UpcertProject,
-} from "../../../core/forms/Project.form"
+import { RecurrenceCadence, UpcertQuest } from "../../../core/forms/Quest.form"
 import { AuthContext } from "../../AuthGate"
 import { RecurrenceComponent } from "../../form_components/RecurrenceComponent"
 import { RepeatCadenceSelector } from "../../form_components/RepeatCadenceSelector"
 import { TaskListForm } from "../../form_components/TaskListForm"
 import { TextField } from "../../form_components/TextField"
 
-export const NewProjectPage: React.FC = () => {
+export const NewQuestPage: React.FC = () => {
   const { user } = useContext(AuthContext)
-  const { createProject } = useContext(ApiContext)
+  const { createQuest: createProject } = useContext(ApiContext)
   const { guildId } = useParams<{ guildId?: string }>()
 
-  const formSubmit = (value: UpcertProject) => {
+  const formSubmit = (value: UpcertQuest) => {
     console.log("====== submitting", value)
     createProject(value)
       .then((value) => {
@@ -32,7 +29,7 @@ export const NewProjectPage: React.FC = () => {
       })
   }
 
-  const initialValues: UpcertProject = useMemo(
+  const initialValues: UpcertQuest = useMemo(
     () => ({
       name: "",
       guild: `guilds/${guildId}`,

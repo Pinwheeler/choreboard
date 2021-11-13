@@ -6,7 +6,7 @@ import {
 } from "@mui/material"
 import { useField } from "formik"
 import React from "react"
-import { RecurrenceCadence } from "../../core/forms/Project.form"
+import { RecurrenceCadence } from "../../core/forms/Quest.form"
 import { OnWeekdayRecurrence } from "./OnWeekdayRecurrenceComponent"
 
 export const RecurrenceComponent: React.FC = () => {

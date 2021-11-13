@@ -1,45 +1,74 @@
-import {
-  addDoc,
-  collection,
-  DocumentData,
-  DocumentReference,
-  getDocs,
-  query,
-} from "@firebase/firestore"
-import React, { useContext } from "react"
-import { UpcertProject } from "../forms/Project.form"
+import { onValue, ref, set } from "@firebase/database"
+import React, { useContext, useEffect, useState } from "react"
+import { UpcertQuest, UpcertQuestDTO } from "../forms/Quest.form"
 import { GuildModel } from "../models/Guild.model"
 import { FirebaseContext } from "./FirebaseContext"
 
 interface IApiContext {
-  createProject: (
-    form: UpcertProject
-  ) => Promise<DocumentReference<DocumentData>>
-  fetchGuilds: () => Promise<GuildModel[]>
+  createQuest: (form: UpcertQuest) => Promise<void>
+  guilds: { [key: string]: GuildModel }
 }
 
 export const ApiContext = React.createContext({} as IApiContext)
 
 export const ApiProvider: React.FC = (props) => {
+  const [guilds, setGuilds] = useState<{ [key: string]: GuildModel }>({})
   const { db } = useContext(FirebaseContext)
 
-  const createProject = (form: UpcertProject) => {
-    return addDoc(collection(db, "projects"), form)
+  const createQuest = (form: UpcertQuest) => {
+    const dto = UpcertQuestDTO(form)
+    return set(ref(db, "quests/" + dto.id), dto)
   }
 
-  const fetchGuilds = (): Promise<GuildModel[]> => {
-    const guildsRef = collection(db, "guilds")
-    const q = query(guildsRef)
-    return getDocs(q).then((result) => {
-      return result.docs.map(
-        (doc) => ({ ...doc.data(), uid: doc.id } as GuildModel)
-      )
+  useEffect(() => {
+    const guildsRef = ref(db, "guilds/")
+    onValue(guildsRef, (snapshot) => {
+      const data = snapshot.val() as { [key: string]: GuildModel }
+      setGuilds(data)
     })
-  }
+  }, [db])
+
+  // const fetchGuilds = (): Promise<GuildModel[]> => {
+  //   const guildsRef = collection(db, "guilds")
+  //   const q = query(guildsRef)
+  //   return getDocs(q).then((result) => {
+  //     return result.docs.map(
+  //       (doc) => ({ ...doc.data(), uid: doc.id } as GuildModel)
+  //     )
+  //   })
+  // }
+
+  // const fetchGuild = (guildId: string): Promise<GuildModel> => {
+  //   const guildRef = doc(db, "guilds", guildId)
+  //   return getDoc(guildRef).then((result) => {
+  //     const model: GuildModel = {
+  //       ...(result.data() as GuildModel),
+  //       uid: result.id,
+  //     }
+  //     return model
+  //   })
+  // }
+
+  // const fetchQuestsForGuild = (guildId: string) => {
+  //   const questsRef = collection(db, "quests")
+  //   // const q = query(projectsRef, where("guild", "==", `${guildId}`))
+  //   const q = query(questsRef)
+  //   return getDocs(q)
+  //     .then((result) => {
+  //       return result.docs.map((doc) => {
+  //         const model = doc.data() as QuestModel
+  //         return new QuestEntity(model, doc.id)
+  //       })
+  //     })
+  //     .catch((error) => {
+  //       console.error("error", error)
+  //       throw error
+  //     })
+  // }
 
   const value = {
-    createProject,
-    fetchGuilds,
+    createQuest,
+    guilds,
   }
 
   return (

@@ -1,19 +1,11 @@
 import { Grid } from "@mui/material"
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext } from "react"
 import { ApiContext } from "../../core/contexts/ApiContext"
-import { GuildModel } from "../../core/models/Guild.model"
-import { GuildCard } from "../GuildCard"
+import { GuildCard } from "../cards/GuildCard"
 import { LoadingSpinner } from "../LoadingSpinner"
 
 export const HomePage: React.FC = () => {
-  const { fetchGuilds } = useContext(ApiContext)
-  const [guilds, setGuilds] = useState<GuildModel[]>()
-
-  useEffect(() => {
-    fetchGuilds().then((result) => {
-      setGuilds(result)
-    })
-  })
+  const { guilds } = useContext(ApiContext)
 
   if (!guilds) {
     return <LoadingSpinner whatIsLoading="Guilds" />
@@ -21,9 +13,9 @@ export const HomePage: React.FC = () => {
 
   return (
     <Grid container>
-      {guilds.map((guild) => (
-        <Grid key={`guild_card_${guild.name}`} item sm={12} md={3}>
-          <GuildCard guild={guild} />
+      {Object.entries(guilds).map(([key, guild]) => (
+        <Grid key={`guild_card_${key}`} item sm={12} md={3}>
+          <GuildCard guild={guild} guildId={key} />
         </Grid>
       ))}
     </Grid>
