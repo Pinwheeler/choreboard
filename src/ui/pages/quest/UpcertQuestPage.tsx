@@ -7,21 +7,27 @@ import { useParams } from "react-router"
 import * as yup from "yup"
 import { ApiContext } from "../../../core/contexts/ApiContext"
 import { RecurrenceCadence, UpcertQuest } from "../../../core/forms/Quest.form"
+import { QuestEntity } from "../../../core/models/Quest.model"
 import { AuthContext } from "../../AuthGate"
 import { RecurrenceComponent } from "../../form_components/RecurrenceComponent"
 import { RepeatCadenceSelector } from "../../form_components/RepeatCadenceSelector"
-import { TaskListForm } from "../../form_components/TaskListForm"
+import { TaskListCreateForm } from "../../form_components/TaskListCreateForm"
 import { TextField } from "../../form_components/TextField"
 
-export const NewQuestPage: React.FC = () => {
+interface Props {
+  quest?: QuestEntity
+}
+
+export const UpcertQuestPage: React.FC<Props> = (props) => {
+  const { quest } = props
   const { user } = useContext(AuthContext)
-  const { createQuest } = useContext(ApiContext)
+  const { upcertQuest } = useContext(ApiContext)
   const { guildId } = useParams<{ guildId?: string }>()
 
   const formSubmit = (value: UpcertQuest) => {
     if (guildId) {
       console.log("====== submitting", value)
-      createQuest(value, guildId)
+      upcertQuest(value, guildId)
         .then((value) => {
           console.log("+++++ success!", value)
         })
@@ -33,15 +39,25 @@ export const NewQuestPage: React.FC = () => {
 
   const initialValues: UpcertQuest = useMemo(
     () => ({
-      name: "",
-      guild: `guilds/${guildId}`,
-      recurring: RecurrenceCadence.none,
-      repeatWeekly: 1,
-      repeatOnWeekday: [],
-      ownerId: user.uid,
-      tasks: [],
+      name: quest?.name ?? "",
+      guild: quest?.guild ?? `guilds/${guildId}`,
+      recurring: quest?.recurring ?? RecurrenceCadence.none,
+      repeatWeekly: quest?.repeatWeekly ?? 1,
+      repeatOnWeekday: quest?.repeatOnWeekday ?? [],
+      ownerId: quest?.ownerId ?? user.uid,
+      tasks: quest?.tasks ?? [],
     }),
-    [guildId, user.uid]
+    [
+      guildId,
+      quest?.guild,
+      quest?.name,
+      quest?.ownerId,
+      quest?.recurring,
+      quest?.repeatOnWeekday,
+      quest?.repeatWeekly,
+      quest?.tasks,
+      user.uid,
+    ]
   )
 
   const theme = useTheme()
@@ -126,7 +142,7 @@ export const NewQuestPage: React.FC = () => {
                   <RecurrenceComponent />
                 </Grid>
               </div>
-              <TaskListForm />
+              <TaskListCreateForm />
               <Grid item xs={12} sm={12}>
                 <Button
                   style={{ width: "100%" }}

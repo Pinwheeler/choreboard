@@ -30,8 +30,6 @@ export const GuildProvider: React.FC<Props> = (props) => {
     }
   }, [db, guildId])
 
-  console.log("guild provider", guild)
-
   if (!guild) {
     return <LoadingSpinner whatIsLoading={`Guild data for guild: ${guildId}`} />
   }

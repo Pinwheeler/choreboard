@@ -3,7 +3,7 @@ import { RecurrenceCadence, Weekday } from "../forms/Quest.form"
 import { TaskEntity, TaskModel } from "./Task.model"
 
 export interface QuestModel {
-  uid: string
+  id: string
   name: string
   guild: string
   dueDate?: number
@@ -15,7 +15,7 @@ export interface QuestModel {
 }
 
 export class QuestEntity {
-  uid: string
+  id: string
   name: string
   guild: string
   dueDate?: DateTime
@@ -26,7 +26,7 @@ export class QuestEntity {
   tasks: TaskEntity[]
 
   constructor(model: QuestModel) {
-    this.uid = model.uid
+    this.id = model.id
     this.name = model.name
     this.guild = model.guild
     this.dueDate = model.dueDate
@@ -37,5 +37,32 @@ export class QuestEntity {
     this.repeatOnWeekday = model.repeatOnWeekday
     this.ownerId = model.ownerId
     this.tasks = model.tasks.map((m) => new TaskEntity(m))
+  }
+
+  get isComplete() {
+    let isComplete = true
+    this.tasks.forEach((t) => {
+      if (!t.complete) {
+        isComplete = false
+      }
+    })
+
+    return isComplete
+  }
+
+  get isFailed() {
+    if (!this.dueDate) {
+      return false
+    }
+
+    return this.dueDate < DateTime.now()
+  }
+
+  get isActive() {
+    if (!this.dueDate) {
+      return true
+    }
+
+    return this.dueDate > DateTime.now()
   }
 }

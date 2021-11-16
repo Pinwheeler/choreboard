@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid"
 import { UpcertTask, UpcertTaskDTO } from "./Task.form"
 
 export interface UpcertQuest {
+  id?: string
   name: string
   guild: string
   dueDate?: DateTime
@@ -32,7 +33,7 @@ export const UpcertQuestDTO = (model: UpcertQuest) => {
   let refinedTasks = [...model.tasks]
   refinedTasks.pop()
   return {
-    id: uuidv4(),
+    id: model.id ?? uuidv4(),
     name: model.name,
     guild: model.guild,
     dueDate: model.dueDate?.toMillis() ?? null,

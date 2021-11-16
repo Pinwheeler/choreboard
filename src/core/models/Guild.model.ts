@@ -7,17 +7,45 @@ export interface GuildModel {
 
 export class GuildEntity {
   name: string
-  quests: QuestEntity[]
+  quests: { [key: string]: QuestEntity }
 
   constructor(model: GuildModel) {
-    console.log("constructing with model", model)
     this.name = model.name
     if (model.quests) {
-      this.quests = Object.entries(model.quests).map(
-        ([_key, q]) => new QuestEntity(q)
-      )
+      this.quests = {}
+      Object.entries(model.quests).forEach(([key, q]) => {
+        this.quests[key] = new QuestEntity(q)
+      })
     } else {
-      this.quests = []
+      this.quests = {}
+    }
+  }
+
+  get sortedQuests(): {
+    activeQuests: QuestEntity[]
+    completedQuests: QuestEntity[]
+    failedQuests: QuestEntity[]
+  } {
+    let activeQuests: QuestEntity[] = []
+    let completedQuests: QuestEntity[] = []
+    let failedQuests: QuestEntity[] = []
+
+    Object.entries(this.quests).forEach(([_key, q]) => {
+      if (q.isActive) {
+        activeQuests.push(q)
+      }
+      if (q.isComplete) {
+        completedQuests.push(q)
+      }
+      if (q.isFailed) {
+        failedQuests.push(q)
+      }
+    })
+
+    return {
+      activeQuests,
+      completedQuests,
+      failedQuests,
     }
   }
 }

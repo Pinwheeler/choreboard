@@ -1,4 +1,5 @@
 import {
+  ButtonBase,
   Card,
   CardContent,
   Divider,
@@ -7,6 +8,7 @@ import {
   useTheme,
 } from "@mui/material"
 import React from "react"
+import { useHistory } from "react-router"
 import { useDueDateInfo } from "../../core/models/DueDateInfo"
 import { QuestEntity } from "../../core/models/Quest.model"
 import { TaskEntity } from "../../core/models/Task.model"
@@ -17,22 +19,29 @@ interface Props {
 
 export const QuestCard: React.FC<Props> = (props) => {
   const { quest } = props
-  const dueDateStr = quest.dueDate ? quest.dueDate.toRelative() : undefined
+  const dueDateInfo = useDueDateInfo(quest.dueDate)
+  const history = useHistory()
 
   return (
     <Card>
-      <CardContent>
-        <Typography variant="h5">{quest.name}</Typography>
-        {dueDateStr && (
-          <Typography variant="body1">{`due ${dueDateStr}`}</Typography>
-        )}
-        <Divider />
-        <Stack spacing={1}>
-          {quest.tasks.map((t) => (
-            <TaskItem key={`quest_${quest.uid}_task_${t.name}`} task={t} />
-          ))}
-        </Stack>
-      </CardContent>
+      <ButtonBase
+        onClick={() => {
+          history.push(`quests/${quest.id}`)
+        }}
+      >
+        <CardContent>
+          <Typography variant="h5">{quest.name}</Typography>
+          {dueDateInfo?.text && (
+            <Typography variant="body1">{`due ${dueDateInfo.text}`}</Typography>
+          )}
+          <Divider />
+          <Stack spacing={1}>
+            {quest.tasks.map((t) => (
+              <TaskItem key={`quest_${quest.id}_task_${t.name}`} task={t} />
+            ))}
+          </Stack>
+        </CardContent>
+      </ButtonBase>
     </Card>
   )
 }

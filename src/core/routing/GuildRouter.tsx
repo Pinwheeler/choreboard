@@ -9,8 +9,9 @@ import {
 import { AuthGate } from "../../ui/AuthGate"
 import { LoadingSpinner } from "../../ui/LoadingSpinner"
 import { GuildPage } from "../../ui/pages/guild/GuildPage"
-import { NewQuestPage } from "../../ui/pages/quest/NewQuestPage"
+import { UpcertQuestPage } from "../../ui/pages/quest/UpcertQuestPage"
 import { GuildProvider } from "../contexts/GuildContext"
+import { QuestRouter } from "./QuestRouter"
 
 export const GuildRouter = () => {
   let { path, url } = useRouteMatch()
@@ -26,9 +27,10 @@ export const GuildRouter = () => {
         <BrowserRouter>
           <Switch>
             <Route path={`${path}/quests/new`}>
-              <AuthGate>
-                <NewQuestPage />
-              </AuthGate>
+              <UpcertQuestPage />
+            </Route>
+            <Route path={`${path}/quests/:questId`}>
+              <QuestRouter />
             </Route>
             <Route path={`${path}`}>
               <GuildPage />

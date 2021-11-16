@@ -6,7 +6,7 @@ import { QuestCard } from "../../cards/QuestCard"
 export const GuildPage: React.FC = () => {
   const { guild, guildId } = useContext(GuildContext)
 
-  console.log("guild", guild)
+  const sortedQuests = guild.sortedQuests
 
   return (
     <Stack spacing={2}>
@@ -16,13 +16,42 @@ export const GuildPage: React.FC = () => {
           Post New Quest!
         </Button>
       </Stack>
-      <Grid container>
-        {guild.quests.map((quest) => (
-          <Grid item key={`quest_card_${quest.name}`}>
-            <QuestCard quest={quest} />
-          </Grid>
-        ))}
-      </Grid>
+      <Typography variant="h4">Active Quests</Typography>
+      {sortedQuests.activeQuests.length > 0 ? (
+        <Grid container spacing={2}>
+          {sortedQuests.activeQuests.map((quest) => (
+            <Grid item key={`quest_card_${quest.id}`}>
+              <QuestCard quest={quest} />
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <Typography>There are no active quests</Typography>
+      )}
+      <Typography variant="h4">Failed Quests</Typography>
+      {sortedQuests.failedQuests.length > 0 ? (
+        <Grid container spacing={2}>
+          {sortedQuests.failedQuests.map((quest) => (
+            <Grid item key={`quest_card_${quest.id}`}>
+              <QuestCard quest={quest} />
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <Typography>There are no recently failed quests</Typography>
+      )}
+      <Typography variant="h4">Completed Quests</Typography>
+      {sortedQuests.completedQuests.length > 0 ? (
+        <Grid container spacing={2}>
+          {sortedQuests.failedQuests.map((quest) => (
+            <Grid item key={`quest_card_${quest.id}`}>
+              <QuestCard quest={quest} />
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <Typography>There are no recently completed quests</Typography>
+      )}
     </Stack>
   )
 }

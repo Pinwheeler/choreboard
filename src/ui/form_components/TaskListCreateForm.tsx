@@ -8,7 +8,7 @@ import { Priority } from "../../core/models/Priority.model"
 import { PriorityComponent } from "./PriorityComponent"
 import { TextField } from "./TextField"
 
-export const TaskListForm: React.FC = () => {
+export const TaskListCreateForm: React.FC = () => {
   const [tasks, _meta, helper] = useField<UpcertTask[]>("tasks")
 
   if (tasks.value.length === 0) {
