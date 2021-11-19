@@ -14,6 +14,19 @@ export class TaskEntity {
   priority: Priority
   complete: boolean
 
+  toModel(): object {
+    const model: { [key: string]: any } = {
+      name: this.name,
+      dueDate: this.dueDate?.toMillis(),
+      priority: this.priority,
+      complete: this.complete,
+    }
+    Object.entries(model).forEach(([key, value]) =>
+      value === undefined ? delete model[key] : {}
+    )
+    return model
+  }
+
   constructor(model: TaskModel) {
     this.name = model.name
     this.dueDate = model.dueDate
@@ -21,5 +34,23 @@ export class TaskEntity {
       : undefined
     this.priority = model.priority as Priority
     this.complete = model.complete
+  }
+
+  get isFailed() {
+    if (!this.dueDate) {
+      return false
+    }
+
+    return this.dueDate < DateTime.now()
+  }
+
+  get isActive() {
+    if (this.complete) {
+      return false
+    }
+    if (this.isFailed) {
+      return false
+    }
+    return true
   }
 }

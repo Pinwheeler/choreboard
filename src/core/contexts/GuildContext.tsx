@@ -25,7 +25,9 @@ export const GuildProvider: React.FC<Props> = (props) => {
       const guildRef = ref(db, `guilds/${guildId}`)
       onValue(guildRef, (snapshot) => {
         const data = snapshot.val() as GuildModel
-        setGuild(new GuildEntity(data))
+        if (data) {
+          setGuild(new GuildEntity(data))
+        }
       })
     }
   }, [db, guildId])
@@ -33,8 +35,6 @@ export const GuildProvider: React.FC<Props> = (props) => {
   if (!guild) {
     return <LoadingSpinner whatIsLoading={`Guild data for guild: ${guildId}`} />
   }
-
-  console.log("found guild ")
 
   const value = {
     guild,

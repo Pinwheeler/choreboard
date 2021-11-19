@@ -7,8 +7,9 @@ import {
   Typography,
   useTheme,
 } from "@mui/material"
-import React from "react"
+import React, { useContext } from "react"
 import { useHistory } from "react-router"
+import { GuildContext } from "../../core/contexts/GuildContext"
 import { useDueDateInfo } from "../../core/models/DueDateInfo"
 import { QuestEntity } from "../../core/models/Quest.model"
 import { TaskEntity } from "../../core/models/Task.model"
@@ -19,6 +20,7 @@ interface Props {
 
 export const QuestCard: React.FC<Props> = (props) => {
   const { quest } = props
+  const { guildId } = useContext(GuildContext)
   const dueDateInfo = useDueDateInfo(quest.dueDate)
   const history = useHistory()
 
@@ -26,7 +28,7 @@ export const QuestCard: React.FC<Props> = (props) => {
     <Card>
       <ButtonBase
         onClick={() => {
-          history.push(`quests/${quest.id}`)
+          history.push(`/guilds/${guildId}/quests/${quest.id}`)
         }}
       >
         <CardContent>

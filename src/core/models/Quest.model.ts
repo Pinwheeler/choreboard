@@ -9,7 +9,7 @@ export interface QuestModel {
   dueDate?: number
   recurring: string
   repeatWeekly: number
-  repeatOnWeekday: Weekday[]
+  repeatOnWeekday?: Weekday[]
   ownerId: string
   tasks: TaskModel[]
 }
@@ -25,6 +25,24 @@ export class QuestEntity {
   ownerId: string
   tasks: TaskEntity[]
 
+  toModel(): object {
+    const model: { [key: string]: any } = {
+      id: this.id,
+      name: this.name,
+      guild: this.guild,
+      dueDate: this.dueDate?.toMillis(),
+      recurring: this.recurring,
+      repeatWeekly: this.repeatWeekly,
+      repeatOnWeekday: this.repeatOnWeekday,
+      ownerId: this.ownerId,
+      tasks: this.tasks.map((e) => e.toModel()),
+    }
+    Object.entries(model).forEach(([key, value]) =>
+      value === undefined ? delete model[key] : {}
+    )
+    return model
+  }
+
   constructor(model: QuestModel) {
     this.id = model.id
     this.name = model.name
@@ -34,7 +52,7 @@ export class QuestEntity {
       : undefined
     this.recurring = model.recurring as RecurrenceCadence
     this.repeatWeekly = model.repeatWeekly
-    this.repeatOnWeekday = model.repeatOnWeekday
+    this.repeatOnWeekday = model.repeatOnWeekday ?? []
     this.ownerId = model.ownerId
     this.tasks = model.tasks.map((m) => new TaskEntity(m))
   }
@@ -59,10 +77,39 @@ export class QuestEntity {
   }
 
   get isActive() {
-    if (!this.dueDate) {
-      return true
+    if (this.isComplete) {
+      return false
     }
+    if (this.isFailed) {
+      return false
+    }
+    return true
+  }
 
-    return this.dueDate > DateTime.now()
+  get sortedTasks(): {
+    activeTasks: TaskEntity[]
+    completedTasks: TaskEntity[]
+    failedTasks: TaskEntity[]
+  } {
+    let activeTasks: TaskEntity[] = []
+    let completedTasks: TaskEntity[] = []
+    let failedTasks: TaskEntity[] = []
+    this.tasks.forEach((t) => {
+      if (t.isActive) {
+        activeTasks.push(t)
+      }
+      if (t.complete) {
+        completedTasks.push(t)
+      }
+      if (t.isFailed) {
+        failedTasks.push(t)
+      }
+    })
+
+    return {
+      activeTasks,
+      completedTasks,
+      failedTasks,
+    }
   }
 }

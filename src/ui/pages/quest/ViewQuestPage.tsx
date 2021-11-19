@@ -19,7 +19,7 @@ export const ViewQuestPage = () => {
       <Stack>
         <Typography variant="h4">Remaining Tasks:</Typography>
         {quest.tasks.map((t) => (
-          <TaskLine task={t} />
+          <TaskLine key={`task_line_${t.name}`} task={t} />
         ))}
       </Stack>
     </Stack>
@@ -31,11 +31,16 @@ interface Props {
 }
 
 const TaskLine: React.FC<Props> = (props) => {
+  const { completeTask } = useContext(QuestContext)
   const { task } = props
   return (
     <Stack direction="row" spacing={2}>
       <Typography variant="h5">{task.name}</Typography>
-      <Button variant="contained" color="success">
+      <Button
+        variant="contained"
+        color="success"
+        onClick={() => completeTask(task)}
+      >
         Complete
       </Button>
     </Stack>
