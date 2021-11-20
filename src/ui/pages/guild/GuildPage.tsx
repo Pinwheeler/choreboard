@@ -7,6 +7,7 @@ export const GuildPage: React.FC = () => {
   const { guild, guildId } = useContext(GuildContext)
 
   const sortedQuests = guild.sortedQuests
+  console.log("sortedQuests", sortedQuests)
 
   return (
     <Stack spacing={2}>
@@ -28,22 +29,10 @@ export const GuildPage: React.FC = () => {
       ) : (
         <Typography>There are no active quests</Typography>
       )}
-      <Typography variant="h4">Failed Quests</Typography>
-      {sortedQuests.failedQuests.length > 0 ? (
-        <Grid container spacing={2}>
-          {sortedQuests.failedQuests.map((quest) => (
-            <Grid item key={`quest_card_${quest.id}`}>
-              <QuestCard quest={quest} />
-            </Grid>
-          ))}
-        </Grid>
-      ) : (
-        <Typography>There are no recently failed quests</Typography>
-      )}
       <Typography variant="h4">Completed Quests</Typography>
       {sortedQuests.completedQuests.length > 0 ? (
         <Grid container spacing={2}>
-          {sortedQuests.failedQuests.map((quest) => (
+          {sortedQuests.completedQuests.map((quest) => (
             <Grid item key={`quest_card_${quest.id}`}>
               <QuestCard quest={quest} />
             </Grid>

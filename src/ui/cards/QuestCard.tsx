@@ -5,7 +5,6 @@ import {
   Divider,
   Stack,
   Typography,
-  useTheme,
 } from "@mui/material"
 import React, { useContext } from "react"
 import { useHistory } from "react-router"
@@ -13,6 +12,7 @@ import { GuildContext } from "../../core/contexts/GuildContext"
 import { useDueDateInfo } from "../../core/models/DueDateInfo"
 import { QuestEntity } from "../../core/models/Quest.model"
 import { TaskEntity } from "../../core/models/Task.model"
+import { useTaskInfo } from "../../core/models/TaskInfo"
 
 interface Props {
   quest: QuestEntity
@@ -54,25 +54,23 @@ interface TaskProps {
 
 const TaskItem: React.FC<TaskProps> = (props) => {
   const { task } = props
-  const theme = useTheme()
-  const dueDateInfo = useDueDateInfo(task.dueDate)
-  const color = task.complete ? theme.palette.grey[400] : "blue"
+  const taskInfo = useTaskInfo(task)
 
   return (
     <Stack>
       <Typography
         style={{
-          color: color,
-          textDecorationLine: task.complete ? "line-through" : undefined,
+          color: taskInfo.color,
+          textDecorationLine: taskInfo.textDecoration,
         }}
       >
         {task.name}
       </Typography>
-      {!task.complete && dueDateInfo && (
+      {!task.complete && taskInfo.dueDateInfo && (
         <Typography
-          style={{ color: dueDateInfo.color }}
+          style={{ color: taskInfo.dueDateInfo.color }}
           variant="caption"
-        >{`due ${dueDateInfo.text}`}</Typography>
+        >{`due ${taskInfo.dueDateInfo.text}`}</Typography>
       )}
     </Stack>
   )

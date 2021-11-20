@@ -1,9 +1,17 @@
+import { ArrowBack } from "@mui/icons-material"
 import { DatePicker, TimePicker } from "@mui/lab"
-import { Button, Grid, Stack, Typography, useTheme } from "@mui/material"
+import {
+  Button,
+  Grid,
+  IconButton,
+  Stack,
+  Typography,
+  useTheme,
+} from "@mui/material"
 import { Formik } from "formik"
 import { DateTime } from "luxon"
 import React, { useContext, useMemo } from "react"
-import { useParams } from "react-router"
+import { useHistory, useParams } from "react-router"
 import * as yup from "yup"
 import { ApiContext } from "../../../core/contexts/ApiContext"
 import { RecurrenceCadence, UpcertQuest } from "../../../core/forms/Quest.form"
@@ -23,6 +31,7 @@ export const UpcertQuestPage: React.FC<Props> = (props) => {
   const { user } = useContext(AuthContext)
   const { upcertQuest } = useContext(ApiContext)
   const { guildId } = useParams<{ guildId?: string }>()
+  const history = useHistory()
 
   const formSubmit = (value: UpcertQuest) => {
     if (guildId) {
@@ -80,7 +89,12 @@ export const UpcertQuestPage: React.FC<Props> = (props) => {
 
   return (
     <Stack spacing={2}>
-      <Typography variant="h2">New Quest</Typography>
+      <Stack direction="row">
+        <IconButton aria-label="Back" onClick={() => history.goBack()}>
+          <ArrowBack />
+        </IconButton>
+        <Typography variant="h2">New Quest</Typography>
+      </Stack>
       <Typography variant="caption">
         Items marked with asterisk* are optional
       </Typography>

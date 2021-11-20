@@ -68,19 +68,8 @@ export class QuestEntity {
     return isComplete
   }
 
-  get isFailed() {
-    if (!this.dueDate) {
-      return false
-    }
-
-    return this.dueDate < DateTime.now()
-  }
-
   get isActive() {
     if (this.isComplete) {
-      return false
-    }
-    if (this.isFailed) {
       return false
     }
     return true

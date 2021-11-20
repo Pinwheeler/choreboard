@@ -24,11 +24,9 @@ export class GuildEntity {
   get sortedQuests(): {
     activeQuests: QuestEntity[]
     completedQuests: QuestEntity[]
-    failedQuests: QuestEntity[]
   } {
     let activeQuests: QuestEntity[] = []
     let completedQuests: QuestEntity[] = []
-    let failedQuests: QuestEntity[] = []
 
     Object.entries(this.quests).forEach(([_key, q]) => {
       if (q.isActive) {
@@ -37,15 +35,11 @@ export class GuildEntity {
       if (q.isComplete) {
         completedQuests.push(q)
       }
-      if (q.isFailed) {
-        failedQuests.push(q)
-      }
     })
 
     return {
       activeQuests,
       completedQuests,
-      failedQuests,
     }
   }
 }
