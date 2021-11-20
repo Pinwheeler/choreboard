@@ -130,6 +130,7 @@ export const UpcertQuestPage: React.FC<Props> = (props) => {
                           name="dueDate"
                           {...props}
                           label="Deadline*"
+                          contentEditable={false}
                         />
                       )}
                     />
@@ -144,6 +145,7 @@ export const UpcertQuestPage: React.FC<Props> = (props) => {
                           name="dueDate"
                           {...props}
                           label="Deadline*"
+                          contentEditable={false}
                         />
                       )}
                     />
