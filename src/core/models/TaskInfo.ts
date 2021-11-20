@@ -6,6 +6,7 @@ export interface TaskInfo {
   dueDateInfo?: DueDateInfo
   color: string
   textDecoration?: string
+  priorityText: string
 }
 
 export const useTaskInfo = (task: TaskEntity): TaskInfo => {
@@ -25,9 +26,17 @@ export const useTaskInfo = (task: TaskEntity): TaskInfo => {
     textDecoration = "line-through"
   }
 
+  let priorityText = ""
+  if (task.priority === 2) {
+    priorityText = "high priority"
+  } else if (task.priority === 0) {
+    priorityText = "low priority"
+  }
+
   return {
     dueDateInfo,
     color,
     textDecoration,
+    priorityText,
   }
 }

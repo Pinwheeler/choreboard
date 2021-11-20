@@ -58,14 +58,17 @@ const TaskItem: React.FC<TaskProps> = (props) => {
 
   return (
     <Stack>
-      <Typography
-        style={{
-          color: taskInfo.color,
-          textDecorationLine: taskInfo.textDecoration,
-        }}
-      >
-        {task.name}
-      </Typography>
+      <Stack direction="row" spacing={2}>
+        <Typography
+          style={{
+            color: taskInfo.color,
+            textDecorationLine: taskInfo.textDecoration,
+          }}
+        >
+          {task.name}
+        </Typography>
+        {!task.complete && <Typography>{taskInfo.priorityText}</Typography>}
+      </Stack>
       {!task.complete && taskInfo.dueDateInfo && (
         <Typography
           style={{ color: taskInfo.dueDateInfo.color }}
