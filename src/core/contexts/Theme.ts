@@ -1,16 +1,49 @@
-import { createTheme, ThemeOptions } from "@mui/material/styles";
+import { createTheme, ThemeOptions } from "@mui/material/styles"
 
-const themeOptions: ThemeOptions = {
+export const themeOptions: ThemeOptions = {
   palette: {
     primary: {
-      main: "#77a1b7",
-      light: "#c9d9e2",
+      main: "#0f0",
     },
-    secondary: {
-      main: "#3f672c",
+    background: {
+      default: "#111111",
+      paper: "#212121",
     },
-    divider: "rgba(0, 0, 0, 0.2)",
   },
-};
+  typography: {
+    fontFamily: "Open Sans",
+    h1: {
+      fontFamily: "Ubuntu Mono",
+    },
+    h2: {
+      fontFamily: "Ubuntu Mono",
+    },
+    h3: {
+      fontFamily: "Ubuntu Mono",
+    },
+    h4: {
+      fontFamily: "Ubuntu Mono",
+    },
+    h6: {
+      fontFamily: "Ubuntu Mono",
+    },
+    h5: {
+      fontFamily: "Ubuntu Mono",
+    },
+    subtitle1: {
+      fontFamily: "Ubuntu Mono",
+    },
+    subtitle2: {
+      fontFamily: "Ubuntu Mono",
+    },
+    button: {
+      fontFamily: "Ubuntu Mono",
+      fontWeight: 900,
+    },
+    overline: {
+      fontFamily: "Ubuntu Mono",
+    },
+  },
+}
 
-export const Theme = createTheme(themeOptions);
+export const Theme = createTheme(themeOptions)
