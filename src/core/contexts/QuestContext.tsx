@@ -1,4 +1,5 @@
 import React, { useContext } from "react"
+import { Redirect } from "react-router"
 import { QuestEntity } from "../models/Quest.model"
 import { TaskEntity } from "../models/Task.model"
 import { ApiContext } from "./ApiContext"
@@ -29,6 +30,10 @@ export const QuestProvider: React.FC<Props> = (props) => {
   }
 
   const value = { quest, questId, completeTask }
+
+  if (!quest) {
+    return <Redirect to={`/guilds/${guildId}`} />
+  }
 
   return (
     <QuestContext.Provider value={value}>

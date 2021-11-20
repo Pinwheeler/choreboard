@@ -32,6 +32,7 @@ export const UpcertQuestPage: React.FC<Props> = (props) => {
   const { upcertQuest } = useContext(ApiContext)
   const { guildId } = useParams<{ guildId?: string }>()
   const history = useHistory()
+  console.log("quest", quest)
 
   const formSubmit = (value: UpcertQuest) => {
     if (guildId) {
@@ -48,9 +49,11 @@ export const UpcertQuestPage: React.FC<Props> = (props) => {
 
   const initialValues: UpcertQuest = useMemo(
     () => ({
+      id: quest?.id,
       name: quest?.name ?? "",
       guild: quest?.guild ?? `guilds/${guildId}`,
       recurring: quest?.recurring ?? RecurrenceCadence.none,
+      dueDate: quest?.dueDate,
       repeatWeekly: quest?.repeatWeekly ?? 1,
       repeatOnWeekday: quest?.repeatOnWeekday ?? [],
       ownerId: quest?.ownerId ?? user.uid,
@@ -58,7 +61,9 @@ export const UpcertQuestPage: React.FC<Props> = (props) => {
     }),
     [
       guildId,
+      quest?.dueDate,
       quest?.guild,
+      quest?.id,
       quest?.name,
       quest?.ownerId,
       quest?.recurring,
@@ -87,19 +92,22 @@ export const UpcertQuestPage: React.FC<Props> = (props) => {
     ),
   })
 
+  const headlineText = quest ? `Editing: ${quest.name}` : "New Quest"
+
   return (
     <Stack spacing={2}>
       <Stack direction="row">
         <IconButton aria-label="Back" onClick={() => history.goBack()}>
           <ArrowBack />
         </IconButton>
-        <Typography variant="h2">New Quest</Typography>
+        <Typography variant="h2">{headlineText}</Typography>
       </Stack>
       <Typography variant="caption">
         Items marked with asterisk* are optional
       </Typography>
       <Formik onSubmit={formSubmit} initialValues={initialValues}>
         {({ handleSubmit, setFieldValue, values }) => {
+          console.log("values", values)
           const changeDate = (value: DateTime | null) =>
             setFieldValue("dueDate", value)
           return (
@@ -130,7 +138,7 @@ export const UpcertQuestPage: React.FC<Props> = (props) => {
                           name="dueDate"
                           {...props}
                           label="Deadline*"
-                          contentEditable={false}
+                          defaultValue={quest?.dueDate}
                         />
                       )}
                     />
@@ -145,7 +153,7 @@ export const UpcertQuestPage: React.FC<Props> = (props) => {
                           name="dueDate"
                           {...props}
                           label="Deadline*"
-                          contentEditable={false}
+                          defaultValue={quest?.dueDate}
                         />
                       )}
                     />

@@ -1,17 +1,40 @@
 import { ArrowBack } from "@mui/icons-material"
 import { Button, IconButton, Stack, Typography, useTheme } from "@mui/material"
-import React, { useContext, useMemo } from "react"
+import React, { useContext, useMemo, useState } from "react"
 import { useHistory } from "react-router"
+import { ApiContext } from "../../../core/contexts/ApiContext"
+import { GuildContext } from "../../../core/contexts/GuildContext"
 import { QuestContext } from "../../../core/contexts/QuestContext"
 import { useDueDateInfo } from "../../../core/models/DueDateInfo"
 import { TaskEntity } from "../../../core/models/Task.model"
+import { LoadingSpinner } from "../../LoadingSpinner"
 
 export const ViewQuestPage = () => {
-  const { quest } = useContext(QuestContext)
+  const { quest, questId } = useContext(QuestContext)
+  const { deleteQuest } = useContext(ApiContext)
+  const { guildId } = useContext(GuildContext)
   const dueDateInfo = useDueDateInfo(quest.dueDate)
+  const [deleting, setDeleting] = useState(false)
 
   const sortedTasks = quest.sortedTasks
   const history = useHistory()
+
+  const onDelete = () => {
+    setDeleting(true)
+    deleteQuest(guildId, questId).then(() => {
+      setDeleting(false)
+      history.push(`/guilds/${guildId}`)
+    })
+  }
+
+  if (deleting) {
+    return (
+      <Stack>
+        <LoadingSpinner whatIsLoading="Deletion of Quest" />
+        <Typography>Deleting...</Typography>
+      </Stack>
+    )
+  }
 
   return (
     <Stack spacing={2}>
@@ -21,6 +44,16 @@ export const ViewQuestPage = () => {
             <ArrowBack />
           </IconButton>
           <Typography variant="h3">{quest.name}</Typography>
+          <Button
+            variant="contained"
+            color="warning"
+            href={`/guilds/${guildId}/quests/${questId}/update`}
+          >
+            Edit
+          </Button>
+          <Button variant="contained" color="error" onClick={onDelete}>
+            Delete
+          </Button>
         </Stack>
         {dueDateInfo && <Typography>Due in {dueDateInfo.text}</Typography>}
       </Stack>

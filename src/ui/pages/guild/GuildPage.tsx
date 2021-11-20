@@ -7,7 +7,6 @@ export const GuildPage: React.FC = () => {
   const { guild, guildId } = useContext(GuildContext)
 
   const sortedQuests = guild.sortedQuests
-  console.log("sortedQuests", sortedQuests)
 
   return (
     <Stack spacing={2}>

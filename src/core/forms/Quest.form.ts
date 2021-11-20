@@ -32,6 +32,7 @@ export type Weekday =
 export const UpcertQuestDTO = (model: UpcertQuest) => {
   let refinedTasks = [...model.tasks]
   refinedTasks.pop()
+  console.log("======== model", model)
   return {
     id: model.id ?? uuidv4(),
     name: model.name,

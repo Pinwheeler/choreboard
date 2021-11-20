@@ -57,6 +57,8 @@ const TaskItemForm: React.FC<Props> = (props) => {
 
   const theme = useTheme()
 
+  console.log("Task values", tasksField.value[index])
+
   return (
     <Grid
       container
@@ -78,6 +80,7 @@ const TaskItemForm: React.FC<Props> = (props) => {
           style={{ width: "100%" }}
           name={`tasks[${index}].name`}
           label="Task Name"
+          defaultValue={tasksField.value[index].name}
         />
       </Grid>
       <Grid item xs={12} sm={12} md={2}>
@@ -90,6 +93,7 @@ const TaskItemForm: React.FC<Props> = (props) => {
               name={`tasks[${index}].dueDateDate`}
               {...props}
               label="Deadline*"
+              defaultValue={tasksField.value[index].dueDate}
             />
           )}
         />
@@ -104,6 +108,7 @@ const TaskItemForm: React.FC<Props> = (props) => {
               name={`tasks[${index}].dueDateTime`}
               {...props}
               label="Deadline*"
+              defaultValue={tasksField.value[index].dueDate}
             />
           )}
         />
