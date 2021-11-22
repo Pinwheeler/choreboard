@@ -12,9 +12,8 @@ import { Formik } from "formik"
 import { DateTime } from "luxon"
 import React, { useContext, useMemo } from "react"
 import { useHistory, useParams } from "react-router"
-import * as yup from "yup"
 import { ApiContext } from "../../../core/contexts/ApiContext"
-import { RecurrenceCadence, UpcertQuest } from "../../../core/forms/Quest.form"
+import { UpcertQuest } from "../../../core/forms/Quest.form"
 import { QuestEntity } from "../../../core/models/Quest.model"
 import { AuthContext } from "../../AuthGate"
 import { RecurrenceComponent } from "../../form_components/RecurrenceComponent"
@@ -40,6 +39,7 @@ export const UpcertQuestPage: React.FC<Props> = (props) => {
       upcertQuest(value, guildId)
         .then((value) => {
           console.log("+++++ success!", value)
+          history.push(`/guilds/${guildId}`)
         })
         .catch((error) => {
           console.log("-----", error)
@@ -52,7 +52,8 @@ export const UpcertQuestPage: React.FC<Props> = (props) => {
       id: quest?.id,
       name: quest?.name ?? "",
       guild: quest?.guild ?? `guilds/${guildId}`,
-      recurring: quest?.recurring ?? RecurrenceCadence.none,
+      recurring: quest?.recurring ?? "none",
+      createdAt: DateTime.now(),
       dueDate: quest?.dueDate,
       repeatWeekly: quest?.repeatWeekly ?? 1,
       repeatOnWeekday: quest?.repeatOnWeekday ?? [],
@@ -76,21 +77,21 @@ export const UpcertQuestPage: React.FC<Props> = (props) => {
 
   const theme = useTheme()
 
-  const validationSchema = yup.object({
-    name: yup.string().required("Name is required"),
-    dueDate: yup.string(),
-    recurring: yup.string().matches(/none|weekly|onWeekday/),
-    repeatWeekly: yup.number(),
-    repeatOnWeekday: yup.array(),
-    owner: yup.object({}),
-    tasks: yup.array().of(
-      yup.object({
-        name: yup.string().required(),
-        dueDate: yup.string(),
-        priority: yup.number(),
-      })
-    ),
-  })
+  // const validationSchema = yup.object({
+  //   name: yup.string().required("Name is required"),
+  //   dueDate: yup.string(),
+  //   recurring: yup.string().matches(/none|weekly|onWeekday/),
+  //   repeatWeekly: yup.number(),
+  //   repeatOnWeekday: yup.array(),
+  //   owner: yup.object({}),
+  //   tasks: yup.array().of(
+  //     yup.object({
+  //       name: yup.string().required(),
+  //       dueDate: yup.string(),
+  //       priority: yup.number(),
+  //     })
+  //   ),
+  // })
 
   const headlineText = quest ? `Editing: ${quest.name}` : "New Quest"
 
@@ -107,7 +108,6 @@ export const UpcertQuestPage: React.FC<Props> = (props) => {
       </Typography>
       <Formik onSubmit={formSubmit} initialValues={initialValues}>
         {({ handleSubmit, setFieldValue, values }) => {
-          console.log("values", values)
           const changeDate = (value: DateTime | null) =>
             setFieldValue("dueDate", value)
           return (
@@ -128,39 +128,44 @@ export const UpcertQuestPage: React.FC<Props> = (props) => {
                       label="Quest Name"
                     />
                   </Grid>
-                  <Grid item xs={12} sm={12} md={2}>
-                    <DatePicker
-                      value={values.dueDate ?? null}
-                      onChange={changeDate}
-                      renderInput={(props) => (
-                        <TextField
-                          style={{ width: "100%" }}
-                          name="dueDate"
-                          {...props}
-                          label="Deadline*"
-                          defaultValue={quest?.dueDate}
-                        />
-                      )}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={12} md={2}>
-                    <TimePicker
-                      value={values.dueDate ?? null}
-                      onChange={changeDate}
-                      renderInput={(props) => (
-                        <TextField
-                          style={{ width: "100%" }}
-                          name="dueDate"
-                          {...props}
-                          label="Deadline*"
-                          defaultValue={quest?.dueDate}
-                        />
-                      )}
-                    />
-                  </Grid>
+
                   <Grid item xs={12} sm={12} md={5}>
                     <RepeatCadenceSelector />
                   </Grid>
+                  {values.recurring === "none" && (
+                    <Grid item xs={12} sm={12} md={2}>
+                      <DatePicker
+                        value={values.dueDate ?? null}
+                        onChange={changeDate}
+                        renderInput={(props) => (
+                          <TextField
+                            style={{ width: "100%" }}
+                            name="dueDate"
+                            {...props}
+                            label="Deadline*"
+                            defaultValue={quest?.dueDate}
+                          />
+                        )}
+                      />
+                    </Grid>
+                  )}
+                  {values.recurring === "none" && (
+                    <Grid item xs={12} sm={12} md={2}>
+                      <TimePicker
+                        value={values.dueDate ?? null}
+                        onChange={changeDate}
+                        renderInput={(props) => (
+                          <TextField
+                            style={{ width: "100%" }}
+                            name="dueDate"
+                            {...props}
+                            label="Deadline*"
+                            defaultValue={quest?.dueDate}
+                          />
+                        )}
+                      />
+                    </Grid>
+                  )}
                 </Grid>
                 <Grid container>
                   <RecurrenceComponent />

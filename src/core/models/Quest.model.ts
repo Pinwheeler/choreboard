@@ -1,4 +1,5 @@
 import { DateTime } from "luxon"
+import { v4 as uuidv4 } from "uuid"
 import { RecurrenceCadence, Weekday } from "../forms/Quest.form"
 import { TaskEntity, TaskModel } from "./Task.model"
 
@@ -6,6 +7,7 @@ export interface QuestModel {
   id: string
   name: string
   guild: string
+  createdAt: number //timestamp
   dueDate?: number
   recurring: string
   repeatWeekly: number
@@ -18,18 +20,32 @@ export class QuestEntity {
   id: string
   name: string
   guild: string
+  createdAt: DateTime
   dueDate?: DateTime
   recurring: RecurrenceCadence
   repeatWeekly: number
   repeatOnWeekday: Weekday[]
   ownerId: string
   tasks: TaskEntity[]
+  /** defined if this is a concrete instance of a recurring quest. If this is defined, then any updates/deletions should
+   * use the parent entity instead, however completion has to track a server-instantiated version. Solution: create a synthetic,
+   * non-recurring quest with due dates at 11:59 PM of the date on which the event is recurring
+   */
+  syntheticTo?: QuestEntity
+
+  createSynthetic(): QuestEntity {
+    const model = this.toModel() as QuestModel
+    model.createdAt = DateTime.now().toMillis()
+    model.id = uuidv4()
+    return new QuestEntity(model, this)
+  }
 
   toModel(): object {
     const model: { [key: string]: any } = {
       id: this.id,
       name: this.name,
       guild: this.guild,
+      createdAt: this.createdAt.toMillis(),
       dueDate: this.dueDate?.toMillis(),
       recurring: this.recurring,
       repeatWeekly: this.repeatWeekly,
@@ -43,18 +59,52 @@ export class QuestEntity {
     return model
   }
 
-  constructor(model: QuestModel) {
+  recurringOnDate(date: DateTime): boolean {
+    const startOfDay = date.startOf("day")
+
+    switch (this.recurring) {
+      case "weekly": {
+        const difference = startOfDay.diff(this.createdAt.startOf("day"))
+        const weeks = difference.as("weeks")
+        console.log("weeks", weeks)
+        console.log("this.repeatWeekly", this.repeatWeekly)
+        console.log("weeks % this.repeatWeekly", weeks % this.repeatWeekly)
+        if (weeks % this.repeatWeekly === 0) {
+          return true
+        }
+        return false
+      }
+      case "onWeekday": {
+        const dateWeekday = date.weekday
+        let isCorrectWeekday = false
+        this.repeatOnWeekday.forEach((weekday) => {
+          console.log(`weekday: ${weekday} dateWeekday: ${dateWeekday}`)
+          if (weekday === dateWeekday) {
+            isCorrectWeekday = true
+          }
+        })
+        return isCorrectWeekday
+      }
+      default:
+        return false
+    }
+  }
+
+  constructor(model: QuestModel, syntheticTo?: QuestEntity) {
+    console.log("model", model)
     this.id = model.id
     this.name = model.name
     this.guild = model.guild
     this.dueDate = model.dueDate
       ? DateTime.fromMillis(model.dueDate)
       : undefined
+    this.createdAt = DateTime.fromMillis(model.createdAt)
     this.recurring = model.recurring as RecurrenceCadence
     this.repeatWeekly = model.repeatWeekly
     this.repeatOnWeekday = model.repeatOnWeekday ?? []
     this.ownerId = model.ownerId
     this.tasks = model.tasks.map((m) => new TaskEntity(m))
+    this.syntheticTo = syntheticTo
   }
 
   get isComplete() {

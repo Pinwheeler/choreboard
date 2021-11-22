@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/preset-typescript": "^7.16.0",
     "@date-io/luxon": "^2.11.1",
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
@@ -12,7 +13,6 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
-    "@types/jest": "^26.0.24",
     "@types/node": "^12.20.36",
     "@types/react": "^17.0.33",
     "@types/react-dom": "^17.0.10",
@@ -57,8 +57,11 @@
     ]
   },
   "devDependencies": {
+    "@types/jest": "^27.0.3",
     "@types/luxon": "^2.0.5",
     "@types/react-helmet": "^6.1.4",
-    "@types/uuid": "^8.3.1"
+    "@types/uuid": "^8.3.1",
+    "jest": "^27.3.1",
+    "ts-jest": "^27.0.7"
   }
 }

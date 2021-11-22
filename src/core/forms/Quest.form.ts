@@ -6,6 +6,7 @@ export interface UpcertQuest {
   id?: string
   name: string
   guild: string
+  createdAt: DateTime
   dueDate?: DateTime
   recurring: RecurrenceCadence
   repeatWeekly: number
@@ -14,29 +15,26 @@ export interface UpcertQuest {
   tasks: UpcertTask[]
 }
 
-export enum RecurrenceCadence {
-  none = "none",
-  weekly = "weekly",
-  onWeekday = "onWeekday",
-}
+export type RecurrenceCadence = "none" | "weekly" | "onWeekday"
 
-export type Weekday =
-  | "monday"
-  | "tuesday"
-  | "wednesday"
-  | "thursday"
-  | "friday"
-  | "saturday"
-  | "sunday"
+export enum Weekday {
+  Monday = 1,
+  Tuesday = 2,
+  Wednesday = 3,
+  Thursday = 4,
+  Friday = 5,
+  Saturday = 6,
+  Sunday = 7,
+}
 
 export const UpcertQuestDTO = (model: UpcertQuest) => {
   let refinedTasks = [...model.tasks]
   refinedTasks.pop()
-  console.log("======== model", model)
   return {
     id: model.id ?? uuidv4(),
     name: model.name,
     guild: model.guild,
+    createdAt: model.createdAt.toMillis(),
     dueDate: model.dueDate?.toMillis() ?? null,
     recurring: model.recurring,
     repeatWeekly: model.repeatWeekly,

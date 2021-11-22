@@ -21,8 +21,7 @@ export const ViewQuestPage = () => {
 
   const onDelete = () => {
     setDeleting(true)
-    deleteQuest(guildId, questId).then(() => {
-      setDeleting(false)
+    deleteQuest(guildId, quest.recurring, questId).then(() => {
       history.push(`/guilds/${guildId}`)
     })
   }

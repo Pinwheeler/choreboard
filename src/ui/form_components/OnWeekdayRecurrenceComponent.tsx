@@ -13,7 +13,7 @@ export const OnWeekdayRecurrence: React.FC = () => {
   const [field, meta, helper] = useField<Weekday[]>("repeatOnWeekday")
 
   const theme = useTheme()
-  const isSmall = !useMediaQuery(theme.breakpoints.up("sm"))
+  const isSmall = !useMediaQuery(theme.breakpoints.up("lg"))
 
   const onChange = (_event: any, value: Weekday[]) => {
     helper.setValue(value)
@@ -21,19 +21,19 @@ export const OnWeekdayRecurrence: React.FC = () => {
 
   const sizedText = (weekday: Weekday) => {
     switch (weekday) {
-      case "monday":
+      case Weekday.Monday:
         return isSmall ? "Mon" : "Monday"
-      case "tuesday":
+      case Weekday.Tuesday:
         return isSmall ? "Tue" : "Tuesday"
-      case "wednesday":
+      case Weekday.Wednesday:
         return isSmall ? "Wed" : "Wednesday"
-      case "thursday":
+      case Weekday.Thursday:
         return isSmall ? "Thu" : "Thursday"
-      case "friday":
+      case Weekday.Friday:
         return isSmall ? "Fri" : "Friday"
-      case "saturday":
+      case Weekday.Saturday:
         return isSmall ? "Sat" : "Saturday"
-      case "sunday":
+      case Weekday.Sunday:
         return isSmall ? "Sun" : "Sunday"
     }
   }
@@ -47,25 +47,25 @@ export const OnWeekdayRecurrence: React.FC = () => {
         style={{ width: "100%" }}
       >
         <ToggleButton style={{ width: "100%" }} value={"monday"}>
-          {sizedText("monday")}
+          {sizedText(Weekday.Monday)}
         </ToggleButton>
         <ToggleButton style={{ width: "100%" }} value={"tuesday"}>
-          {sizedText("tuesday")}
+          {sizedText(Weekday.Tuesday)}
         </ToggleButton>
         <ToggleButton style={{ width: "100%" }} value={"wednesday"}>
-          {sizedText("wednesday")}
+          {sizedText(Weekday.Wednesday)}
         </ToggleButton>
         <ToggleButton style={{ width: "100%" }} value={"thursday"}>
-          {sizedText("thursday")}
+          {sizedText(Weekday.Thursday)}
         </ToggleButton>
         <ToggleButton style={{ width: "100%" }} value={"friday"}>
-          {sizedText("friday")}
+          {sizedText(Weekday.Friday)}
         </ToggleButton>
         <ToggleButton style={{ width: "100%" }} value={"saturday"}>
-          {sizedText("saturday")}
+          {sizedText(Weekday.Saturday)}
         </ToggleButton>
         <ToggleButton style={{ width: "100%" }} value={"sunday"}>
-          {sizedText("sunday")}
+          {sizedText(Weekday.Sunday)}
         </ToggleButton>
       </ToggleButtonGroup>
     </Stack>

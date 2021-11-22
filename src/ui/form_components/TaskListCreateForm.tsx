@@ -3,6 +3,7 @@ import { Button, Grid, useTheme } from "@mui/material"
 import { useField } from "formik"
 import { DateTime } from "luxon"
 import React from "react"
+import { RecurrenceCadence } from "../../core/forms/Quest.form"
 import { emptyUpcertTask, UpcertTask } from "../../core/forms/Task.form"
 import { Priority } from "../../core/models/Priority.model"
 import { PriorityComponent } from "./PriorityComponent"
@@ -41,6 +42,7 @@ interface Props {
 const TaskItemForm: React.FC<Props> = (props) => {
   const { index } = props
   const [tasksField, _tasksMeta, tasksHelper] = useField<UpcertTask[]>("tasks")
+  const [recurringField] = useField<RecurrenceCadence>("recurring")
   const [dateField, _meta, helpers] = useField<DateTime | undefined>(
     `tasks[${index}].dueDate`
   )
@@ -56,8 +58,6 @@ const TaskItemForm: React.FC<Props> = (props) => {
   }
 
   const theme = useTheme()
-
-  console.log("Task values", tasksField.value[index])
 
   return (
     <Grid
@@ -83,36 +83,40 @@ const TaskItemForm: React.FC<Props> = (props) => {
           defaultValue={tasksField.value[index].name}
         />
       </Grid>
-      <Grid item xs={12} sm={12} md={2}>
-        <DatePicker
-          onChange={onDateChange}
-          value={dateField.value ?? null}
-          renderInput={(props) => (
-            <TextField
-              style={{ width: "100%" }}
-              name={`tasks[${index}].dueDateDate`}
-              {...props}
-              label="Deadline*"
-              defaultValue={tasksField.value[index].dueDate}
-            />
-          )}
-        />
-      </Grid>
-      <Grid item xs={12} sm={12} md={2}>
-        <TimePicker
-          value={dateField.value ?? null}
-          onChange={onDateChange}
-          renderInput={(props) => (
-            <TextField
-              style={{ width: "100%" }}
-              name={`tasks[${index}].dueDateTime`}
-              {...props}
-              label="Deadline*"
-              defaultValue={tasksField.value[index].dueDate}
-            />
-          )}
-        />
-      </Grid>
+      {recurringField.value === "none" && (
+        <Grid item xs={12} sm={12} md={2}>
+          <DatePicker
+            onChange={onDateChange}
+            value={dateField.value ?? null}
+            renderInput={(props) => (
+              <TextField
+                style={{ width: "100%" }}
+                name={`tasks[${index}].dueDateDate`}
+                {...props}
+                label="Deadline*"
+                defaultValue={tasksField.value[index].dueDate}
+              />
+            )}
+          />
+        </Grid>
+      )}
+      {recurringField.value === "none" && (
+        <Grid item xs={12} sm={12} md={2}>
+          <TimePicker
+            value={dateField.value ?? null}
+            onChange={onDateChange}
+            renderInput={(props) => (
+              <TextField
+                style={{ width: "100%" }}
+                name={`tasks[${index}].dueDateTime`}
+                {...props}
+                label="Deadline*"
+                defaultValue={tasksField.value[index].dueDate}
+              />
+            )}
+          />
+        </Grid>
+      )}
       <Grid item xs={12} sm={12} md={2}>
         <PriorityComponent index={index} />
       </Grid>

@@ -13,9 +13,9 @@ export const RecurrenceComponent: React.FC = () => {
   const [field, meta, helper] = useField<RecurrenceCadence>("recurring")
 
   switch (field.value) {
-    case RecurrenceCadence.weekly:
+    case "weekly":
       return <WeeklyRecurrence />
-    case RecurrenceCadence.onWeekday:
+    case "onWeekday":
       return <OnWeekdayRecurrence />
     default:
       return null
