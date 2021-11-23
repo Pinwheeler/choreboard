@@ -152,12 +152,15 @@ export class QuestEntity {
     let runningTotal = 1
     const maxLookupDist = 365 // only look one year in advance
     while (!this.recurringOnDate(dueDate) && runningTotal <= maxLookupDist) {
+      const yesOnDate = this.recurringOnDate(dueDate)
       dueDate = date.plus({ days: runningTotal })
       runningTotal += 1
     }
     if (runningTotal > maxLookupDist) {
       throw new Error(
-        `Failed to find recurrence within 1 year for Quest: ${this}`
+        `Failed to find recurrence within 1 year for Quest: ${JSON.stringify(
+          this
+        )}`
       )
     }
     const synthetic = this.createSynthetic()

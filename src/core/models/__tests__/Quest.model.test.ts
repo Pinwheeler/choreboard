@@ -88,7 +88,7 @@ describe("QuestEntity", () => {
       })
 
       it("#firstRecurrenceOnOrAfter times out after 1 year of lookahead", () => {
-        expect(
+        expect(() =>
           entity.firstRecurrenceOnOrAfter(TEST_CREATE_DATE.plus({ weeks: 1 }))
         ).toThrow()
       })
@@ -127,6 +127,45 @@ describe("QuestEntity", () => {
       it("works when using a monday", () => {
         const targetDate = TEST_CREATE_DATE.plus({ days: 2 })
         expect(entity.recurringOnDate(targetDate)).toBe(true)
+      })
+    })
+
+    describe("real world example", () => {
+      const model: QuestModel = {
+        id: "39adf53d-7bb4-47c0-8ad9-b10b6ccd511e",
+        name: "Duck Care",
+        guild: "guilds/wendwood",
+        createdAt: DateTime.fromRFC2822(
+          "2021-11-13T01:45:56.000-08:00"
+        ).toMillis(),
+        recurring: "onWeekday",
+        repeatWeekly: 1,
+        repeatOnWeekday: [
+          Weekday.Monday,
+          Weekday.Tuesday,
+          Weekday.Wednesday,
+          Weekday.Thursday,
+          Weekday.Friday,
+          Weekday.Saturday,
+          Weekday.Sunday,
+        ],
+        ownerId: "mHgpxO5eu9O2WSuFDodlWN6Fwte2",
+        tasks: [
+          { name: "Morning Water", priority: 1, complete: false },
+          { name: "Afternoon Water", priority: 1, complete: false },
+          { name: "Evening Water", priority: 1, complete: false },
+        ],
+      }
+
+      beforeEach(() => {
+        entity = new QuestEntity(model)
+      })
+
+      it("should return whichever date you pass in since it recurrs every day", () => {
+        expect(entity.recurringOnDate(TEST_CREATE_DATE)).toBe(true)
+        expect(entity.firstRecurrenceOnOrAfter(TEST_CREATE_DATE).dueDate).toBe(
+          TEST_CREATE_DATE
+        )
       })
     })
   })

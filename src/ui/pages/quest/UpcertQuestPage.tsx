@@ -31,7 +31,6 @@ export const UpcertQuestPage: React.FC<Props> = (props) => {
   const { upcertQuest } = useContext(ApiContext)
   const { guildId } = useParams<{ guildId?: string }>()
   const history = useHistory()
-  console.log("quest", quest)
 
   const formSubmit = (value: UpcertQuest) => {
     if (guildId) {

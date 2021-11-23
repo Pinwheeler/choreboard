@@ -46,25 +46,25 @@ export const OnWeekdayRecurrence: React.FC = () => {
         value={field.value}
         style={{ width: "100%" }}
       >
-        <ToggleButton style={{ width: "100%" }} value={"monday"}>
+        <ToggleButton style={{ width: "100%" }} value={Weekday.Monday}>
           {sizedText(Weekday.Monday)}
         </ToggleButton>
-        <ToggleButton style={{ width: "100%" }} value={"tuesday"}>
+        <ToggleButton style={{ width: "100%" }} value={Weekday.Tuesday}>
           {sizedText(Weekday.Tuesday)}
         </ToggleButton>
-        <ToggleButton style={{ width: "100%" }} value={"wednesday"}>
+        <ToggleButton style={{ width: "100%" }} value={Weekday.Wednesday}>
           {sizedText(Weekday.Wednesday)}
         </ToggleButton>
-        <ToggleButton style={{ width: "100%" }} value={"thursday"}>
+        <ToggleButton style={{ width: "100%" }} value={Weekday.Thursday}>
           {sizedText(Weekday.Thursday)}
         </ToggleButton>
-        <ToggleButton style={{ width: "100%" }} value={"friday"}>
+        <ToggleButton style={{ width: "100%" }} value={Weekday.Friday}>
           {sizedText(Weekday.Friday)}
         </ToggleButton>
-        <ToggleButton style={{ width: "100%" }} value={"saturday"}>
+        <ToggleButton style={{ width: "100%" }} value={Weekday.Saturday}>
           {sizedText(Weekday.Saturday)}
         </ToggleButton>
-        <ToggleButton style={{ width: "100%" }} value={"sunday"}>
+        <ToggleButton style={{ width: "100%" }} value={Weekday.Sunday}>
           {sizedText(Weekday.Sunday)}
         </ToggleButton>
       </ToggleButtonGroup>

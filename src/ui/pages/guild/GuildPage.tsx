@@ -9,7 +9,7 @@ export const GuildPage: React.FC = () => {
   const sortedQuests = guild.sortedQuests
 
   return (
-    <Grid style={{ padding: 5 }} spacing={2}>
+    <Grid container style={{ padding: 5 }}>
       <Grid item xs={12}>
         <Stack direction="row" spacing={2}>
           <Typography variant="h3">{`${guild.name} Quest Log`}</Typography>
@@ -30,7 +30,7 @@ export const GuildPage: React.FC = () => {
             item
             xs={12}
             sm={6}
-            md={4}
+            md={3}
             key={`quest_card_${quest.id}`}
           >
             <QuestCard quest={quest} />
@@ -41,9 +41,11 @@ export const GuildPage: React.FC = () => {
           <Typography>There are no active quests</Typography>
         </Grid>
       )}
-      <Typography style={{ marginTop: 10 }} variant="h4">
-        Completed Quests
-      </Typography>
+      <Grid item xs={12}>
+        <Typography style={{ marginTop: 10 }} variant="h4">
+          Completed Quests
+        </Typography>
+      </Grid>
       {sortedQuests.completedQuests.length > 0 ? (
         sortedQuests.completedQuests.map((quest) => (
           <Grid

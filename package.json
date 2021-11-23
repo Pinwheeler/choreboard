@@ -58,6 +58,8 @@
   "devDependencies": {
     "@types/luxon": "^2.0.5",
     "@types/react-helmet": "^6.1.4",
-    "@types/uuid": "^8.3.1"
+    "@types/uuid": "^8.3.1",
+    "jest": "^26.6.0",
+    "ts-jest": "^26.5.6"
   }
 }

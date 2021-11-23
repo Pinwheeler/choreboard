@@ -25,7 +25,6 @@ export const GuildProvider: React.FC<Props> = (props) => {
       const guildRef = ref(db, `guilds/${guildId}`)
       onValue(guildRef, (snapshot) => {
         const data = snapshot.val() as GuildModel
-        console.log("data", data)
         if (data) {
           setGuild(new GuildEntity(data))
         }
