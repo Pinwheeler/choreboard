@@ -59,39 +59,7 @@ export class QuestEntity {
     return model
   }
 
-  recurringOnDate(date: DateTime): boolean {
-    const startOfDay = date.startOf("day")
-
-    switch (this.recurring) {
-      case "weekly": {
-        const difference = startOfDay.diff(this.createdAt.startOf("day"))
-        const weeks = difference.as("weeks")
-        console.log("weeks", weeks)
-        console.log("this.repeatWeekly", this.repeatWeekly)
-        console.log("weeks % this.repeatWeekly", weeks % this.repeatWeekly)
-        if (weeks % this.repeatWeekly === 0) {
-          return true
-        }
-        return false
-      }
-      case "onWeekday": {
-        const dateWeekday = date.weekday
-        let isCorrectWeekday = false
-        this.repeatOnWeekday.forEach((weekday) => {
-          console.log(`weekday: ${weekday} dateWeekday: ${dateWeekday}`)
-          if (weekday === dateWeekday) {
-            isCorrectWeekday = true
-          }
-        })
-        return isCorrectWeekday
-      }
-      default:
-        return false
-    }
-  }
-
   constructor(model: QuestModel, syntheticTo?: QuestEntity) {
-    console.log("model", model)
     this.id = model.id
     this.name = model.name
     this.guild = model.guild
@@ -150,5 +118,50 @@ export class QuestEntity {
       completedTasks,
       failedTasks,
     }
+  }
+
+  recurringOnDate(date: DateTime): boolean {
+    const startOfDay = date.startOf("day")
+
+    switch (this.recurring) {
+      case "weekly": {
+        const difference = startOfDay.diff(this.createdAt.startOf("day"))
+        const weeks = difference.as("weeks")
+        if (weeks % this.repeatWeekly === 0) {
+          return true
+        }
+        return false
+      }
+      case "onWeekday": {
+        const dateWeekday = date.weekday
+        let isCorrectWeekday = false
+        this.repeatOnWeekday.forEach((weekday) => {
+          if (weekday === dateWeekday) {
+            isCorrectWeekday = true
+          }
+        })
+        return isCorrectWeekday
+      }
+      default:
+        return false
+    }
+  }
+
+  firstRecurrenceOnOrAfter(date: DateTime): QuestEntity {
+    let dueDate = date
+    let runningTotal = 1
+    const maxLookupDist = 365 // only look one year in advance
+    while (!this.recurringOnDate(dueDate) && runningTotal <= maxLookupDist) {
+      dueDate = date.plus({ days: runningTotal })
+      runningTotal += 1
+    }
+    if (runningTotal > maxLookupDist) {
+      throw new Error(
+        `Failed to find recurrence within 1 year for Quest: ${this}`
+      )
+    }
+    const synthetic = this.createSynthetic()
+    synthetic.dueDate = dueDate
+    return synthetic
   }
 }

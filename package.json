@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@babel/preset-typescript": "^7.16.0",
     "@date-io/luxon": "^2.11.1",
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
@@ -57,11 +56,8 @@
     ]
   },
   "devDependencies": {
-    "@types/jest": "^27.0.3",
     "@types/luxon": "^2.0.5",
     "@types/react-helmet": "^6.1.4",
-    "@types/uuid": "^8.3.1",
-    "jest": "^27.3.1",
-    "ts-jest": "^27.0.7"
+    "@types/uuid": "^8.3.1"
   }
 }

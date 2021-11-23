@@ -20,13 +20,8 @@ export class GuildEntity {
       Object.entries(model.recurring_quests).forEach(([key, q]) => {
         const entity = new QuestEntity(q)
         this.recurringQuests[key] = entity
-        switch (entity.recurring) {
-          case "onWeekday":
-            if (entity.recurringOnDate(DateTime.now())) {
-              const synthetic = entity.createSynthetic()
-              this.quests[synthetic.id] = synthetic
-            }
-        }
+        const synthetic = entity.firstRecurrenceOnOrAfter(DateTime.now())
+        this.quests[synthetic.id] = synthetic
       })
     }
     if (model.quests) {
