@@ -1,4 +1,4 @@
-import { Button, Grid, Stack, Typography } from "@mui/material"
+import { Button, Grid, Stack, Typography, useTheme } from "@mui/material"
 import { useContext } from "react"
 import { GuildContext } from "../../../core/contexts/GuildContext"
 import { QuestCard } from "../../cards/QuestCard"
@@ -7,6 +7,7 @@ export const GuildPage: React.FC = () => {
   const { guild, guildId } = useContext(GuildContext)
 
   const sortedQuests = guild.sortedQuests
+  const theme = useTheme()
 
   return (
     <Grid container style={{ padding: 5 }}>
@@ -28,8 +29,7 @@ export const GuildPage: React.FC = () => {
           <Grid
             style={{ margin: 5 }}
             item
-            xs={12}
-            sm={6}
+            sm={12}
             md={3}
             key={`quest_card_${quest.id}`}
           >
@@ -51,8 +51,7 @@ export const GuildPage: React.FC = () => {
           <Grid
             style={{ margin: 5 }}
             item
-            xs={12}
-            sm={6}
+            sm={12}
             md={4}
             key={`quest_card_${quest.id}`}
           >

@@ -1,5 +1,4 @@
 import { DateTime } from "luxon"
-import { v4 as uuidv4 } from "uuid"
 import { RecurrenceCadence, Weekday } from "../forms/Quest.form"
 import { TaskEntity, TaskModel } from "./Task.model"
 
@@ -36,7 +35,6 @@ export class QuestEntity {
   createSynthetic(): QuestEntity {
     const model = this.toModel() as QuestModel
     model.createdAt = DateTime.now().toMillis()
-    model.id = uuidv4()
     return new QuestEntity(model, this)
   }
 
@@ -147,12 +145,11 @@ export class QuestEntity {
     }
   }
 
-  firstRecurrenceOnOrAfter(date: DateTime): QuestEntity {
+  dateOfFirstRecurrenceOnOrAfter(date: DateTime): DateTime {
     let dueDate = date
     let runningTotal = 1
     const maxLookupDist = 365 // only look one year in advance
     while (!this.recurringOnDate(dueDate) && runningTotal <= maxLookupDist) {
-      const yesOnDate = this.recurringOnDate(dueDate)
       dueDate = date.plus({ days: runningTotal })
       runningTotal += 1
     }
@@ -163,8 +160,13 @@ export class QuestEntity {
         )}`
       )
     }
+    return dueDate
+  }
+
+  firstRecurrenceOnOrAfter(date: DateTime): QuestEntity {
+    const dueDate = this.dateOfFirstRecurrenceOnOrAfter(date)
     const synthetic = this.createSynthetic()
-    synthetic.dueDate = dueDate
+    synthetic.dueDate = dueDate.endOf("day")
     return synthetic
   }
 }

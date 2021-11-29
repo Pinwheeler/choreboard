@@ -48,7 +48,9 @@ describe("QuestEntity", () => {
       let expectedFirstRecurrenceDate: DateTime
 
       beforeEach(() => {
-        expectedFirstRecurrenceDate = TEST_CREATE_DATE.plus({ weeks: 2 })
+        expectedFirstRecurrenceDate = TEST_CREATE_DATE.plus({ weeks: 2 }).endOf(
+          "day"
+        )
       })
       it("before first recurrence", () => {
         const targetDate = TEST_CREATE_DATE.plus({ days: 8 })
@@ -164,7 +166,7 @@ describe("QuestEntity", () => {
       it("should return whichever date you pass in since it recurrs every day", () => {
         expect(entity.recurringOnDate(TEST_CREATE_DATE)).toBe(true)
         expect(entity.firstRecurrenceOnOrAfter(TEST_CREATE_DATE).dueDate).toBe(
-          TEST_CREATE_DATE
+          TEST_CREATE_DATE.endOf("day")
         )
       })
     })

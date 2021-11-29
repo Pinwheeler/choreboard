@@ -25,8 +25,9 @@ export const QuestCard: React.FC<Props> = (props) => {
   const history = useHistory()
 
   return (
-    <Card>
+    <Card style={{ height: "100%", width: "100%" }}>
       <ButtonBase
+        style={{ height: "100%", width: "100%" }}
         onClick={() => {
           history.push(`/guilds/${guildId}/quests/${quest.id}`)
         }}
