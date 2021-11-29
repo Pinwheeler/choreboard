@@ -13,6 +13,7 @@ export interface QuestModel {
   repeatOnWeekday?: Weekday[]
   ownerId: string
   tasks: TaskModel[]
+  synthetic: boolean
 }
 
 export class QuestEntity {
@@ -50,6 +51,7 @@ export class QuestEntity {
       repeatOnWeekday: this.repeatOnWeekday,
       ownerId: this.ownerId,
       tasks: this.tasks.map((e) => e.toModel()),
+      synthetic: this.syntheticTo ? true : false,
     }
     Object.entries(model).forEach(([key, value]) =>
       value === undefined ? delete model[key] : {}

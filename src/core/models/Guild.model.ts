@@ -16,17 +16,25 @@ export class GuildEntity {
     this.name = model.name
     this.quests = {}
     this.recurringQuests = {}
+    if (model.quests) {
+      Object.entries(model.quests).forEach(([key, q]) => {
+        this.quests[key] = new QuestEntity(q)
+      })
+    }
     if (model.recurring_quests) {
       Object.entries(model.recurring_quests).forEach(([key, q]) => {
         const entity = new QuestEntity(q)
         this.recurringQuests[key] = entity
         const synthetic = entity.firstRecurrenceOnOrAfter(DateTime.now())
-        this.quests[synthetic.id] = synthetic
-      })
-    }
-    if (model.quests) {
-      Object.entries(model.quests).forEach(([key, q]) => {
-        this.quests[key] = new QuestEntity(q)
+        if (!this.quests[synthetic.id]) {
+          this.quests[synthetic.id] = synthetic
+        } else {
+          const newDueDate = synthetic.dueDate
+          const currentDueDate = this.quests[synthetic.id].dueDate
+          if (newDueDate && currentDueDate && currentDueDate < newDueDate) {
+            this.quests[synthetic.id] = synthetic
+          }
+        }
       })
     }
   }
