@@ -21,7 +21,7 @@ export const ViewQuestPage = () => {
 
   const onDelete = () => {
     setDeleting(true)
-    deleteQuest(guildId, quest.recurring, questId).then(() => {
+    deleteQuest(guildId, quest.recurring !== "none", questId).then(() => {
       history.push(`/guilds/${guildId}`)
     })
   }
@@ -98,8 +98,6 @@ const TaskLine: React.FC<Props> = (props) => {
   const { task } = props
   const { completeTask, uncompleteTask } = useContext(QuestContext)
   const { heroMap } = useContext(GuildContext)
-  console.log(heroMap)
-  console.log(task.completedBy)
   const theme = useTheme()
   const color = useMemo(() => {
     if (!!task.completedBy) {

@@ -1,10 +1,6 @@
 import { onValue, ref, remove, set } from "@firebase/database"
 import React, { useContext, useEffect, useState } from "react"
-import {
-  RecurrenceCadence,
-  UpcertQuest,
-  UpcertQuestDTO,
-} from "../forms/Quest.form"
+import { UpcertQuest, UpcertQuestDTO } from "../forms/Quest.form"
 import { GuildModel } from "../models/Guild.model"
 import { HeroEntity } from "../models/Hero.model"
 import { QuestEntity } from "../models/Quest.model"
@@ -26,22 +22,18 @@ interface IApiContext {
   guilds: { [key: string]: GuildModel }
   deleteQuest: (
     guildId: string,
-    recurring: RecurrenceCadence,
+    synthetic: boolean,
     questId: string
   ) => Promise<void>
 }
 
 export const ApiContext = React.createContext({} as IApiContext)
 
-const pathForQuest = (
-  guildId: string,
-  recurring: RecurrenceCadence,
-  questId: string
-) => {
-  if (recurring === "none") {
-    return `guilds/${guildId}/quests/${questId}`
-  } else {
+const pathForQuest = (guildId: string, recurring: boolean, questId: string) => {
+  if (recurring) {
     return `guilds/${guildId}/recurring_quests/${questId}`
+  } else {
+    return `guilds/${guildId}/quests/${questId}`
   }
 }
 
@@ -51,13 +43,14 @@ export const ApiProvider: React.FC = (props) => {
 
   const upcertQuest = (form: UpcertQuest, guildId: string) => {
     const dto = UpcertQuestDTO(form)
-    const path = pathForQuest(guildId, form.recurring, dto.id)
+    const recurring = dto.recurring !== "none" && !form.synthetic
+    const path = pathForQuest(guildId, recurring, dto.id)
     return set(ref(db, path), dto)
   }
 
   const deleteQuest = (
     guildId: string,
-    recurring: RecurrenceCadence,
+    recurring: boolean,
     questId: string
   ) => {
     const path = pathForQuest(guildId, recurring, questId)

@@ -13,6 +13,7 @@ export interface UpcertQuest {
   repeatOnWeekday: Weekday[]
   ownerId: string
   tasks: UpcertTask[]
+  synthetic: boolean
 }
 
 export type RecurrenceCadence = "none" | "weekly" | "onWeekday"

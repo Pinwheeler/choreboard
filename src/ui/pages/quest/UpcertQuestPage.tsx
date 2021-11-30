@@ -13,6 +13,7 @@ import { DateTime } from "luxon"
 import React, { useContext, useMemo } from "react"
 import { useHistory, useParams } from "react-router"
 import { ApiContext } from "../../../core/contexts/ApiContext"
+import { QuestContext } from "../../../core/contexts/QuestContext"
 import { UpcertQuest } from "../../../core/forms/Quest.form"
 import { QuestEntity } from "../../../core/models/Quest.model"
 import { AuthContext } from "../../AuthGate"
@@ -29,6 +30,7 @@ export const UpcertQuestPage: React.FC<Props> = (props) => {
   const { quest } = props
   const { user } = useContext(AuthContext)
   const { upcertQuest } = useContext(ApiContext)
+  const { questSyntheticToCurrentQuest } = useContext(QuestContext)
   const { guildId } = useParams<{ guildId?: string }>()
   const history = useHistory()
 
@@ -36,9 +38,22 @@ export const UpcertQuestPage: React.FC<Props> = (props) => {
     if (guildId) {
       console.log("====== submitting", value)
       upcertQuest(value, guildId)
-        .then((value) => {
-          console.log("+++++ success!", value)
-          history.push(`/guilds/${guildId}`)
+        .then((v) => {
+          console.log("+++++ success!", v)
+          // also update any synthetic requests
+          if (questSyntheticToCurrentQuest) {
+            const syntheticUpdate: UpcertQuest = {
+              ...value,
+              dueDate: questSyntheticToCurrentQuest.dueDate,
+              synthetic: true,
+            }
+            upcertQuest(syntheticUpdate, guildId).then((v) => {
+              console.log("s+s+s+s+ synthetic success!", v)
+              history.push(`/guilds/${guildId}`)
+            })
+          } else {
+            history.push(`/guilds/${guildId}`)
+          }
         })
         .catch((error) => {
           console.log("-----", error)
@@ -58,6 +73,7 @@ export const UpcertQuestPage: React.FC<Props> = (props) => {
       repeatOnWeekday: quest?.repeatOnWeekday ?? [],
       ownerId: quest?.ownerId ?? user.uid,
       tasks: quest?.tasks ?? [],
+      synthetic: !!quest?.syntheticTo,
     }),
     [
       guildId,
@@ -69,6 +85,7 @@ export const UpcertQuestPage: React.FC<Props> = (props) => {
       quest?.recurring,
       quest?.repeatOnWeekday,
       quest?.repeatWeekly,
+      quest?.syntheticTo,
       quest?.tasks,
       user.uid,
     ]

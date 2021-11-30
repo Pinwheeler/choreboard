@@ -33,8 +33,8 @@ export const GuildPage: React.FC = () => {
             style={{ margin: 5 }}
             item
             xs={12}
-            md={6}
-            lg={4}
+            md={5.85}
+            lg={3.85}
             key={`quest_card_${quest.id}`}
           >
             <QuestCard quest={quest} />
@@ -56,8 +56,8 @@ export const GuildPage: React.FC = () => {
             style={{ margin: 5 }}
             item
             xs={12}
-            md={6}
-            lg={4}
+            md={5.85}
+            lg={3.85}
             key={`quest_card_${quest.id}`}
           >
             <QuestCard quest={quest} />
