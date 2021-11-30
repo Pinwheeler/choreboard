@@ -14,7 +14,7 @@ export const HomePage: React.FC = () => {
   return (
     <Grid container>
       {Object.entries(guilds).map(([key, guild]) => (
-        <Grid key={`guild_card_${key}`} item sm={12} md={3}>
+        <Grid key={`guild_card_${key}`} item sm={12} xs={12} md={3}>
           <GuildCard guild={guild} guildId={key} />
         </Grid>
       ))}

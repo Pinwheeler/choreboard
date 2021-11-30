@@ -56,7 +56,7 @@ export const ViewQuestPage = () => {
         </Stack>
         {dueDateInfo && <Typography>Due in {dueDateInfo.text}</Typography>}
       </Stack>
-      <Stack>
+      <Stack spacing={1}>
         {sortedTasks.activeTasks.length > 0 && (
           <>
             <Typography variant="h4">Remaining Tasks:</Typography>
@@ -66,7 +66,7 @@ export const ViewQuestPage = () => {
           </>
         )}
       </Stack>
-      <Stack>
+      <Stack spacing={1}>
         {sortedTasks.completedTasks.length > 0 && (
           <>
             <Typography variant="h4">Completed Tasks:</Typography>
@@ -76,7 +76,7 @@ export const ViewQuestPage = () => {
           </>
         )}
       </Stack>
-      <Stack>
+      <Stack spacing={1}>
         {sortedTasks.failedTasks.length > 0 && (
           <>
             <Typography variant="h4">Failed Tasks:</Typography>

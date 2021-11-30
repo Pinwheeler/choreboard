@@ -30,7 +30,7 @@ export const GuildPage: React.FC = () => {
             style={{ margin: 5 }}
             item
             sm={12}
-            md={3}
+            md={4}
             key={`quest_card_${quest.id}`}
           >
             <QuestCard quest={quest} />

@@ -115,7 +115,7 @@ export const UpcertQuestPage: React.FC<Props> = (props) => {
                 style={{
                   padding: 15,
                   marginTop: 0,
-                  backgroundColor: theme.palette.grey[300],
+                  backgroundColor: theme.palette.grey[800],
                   borderRadius: 5,
                 }}
               >

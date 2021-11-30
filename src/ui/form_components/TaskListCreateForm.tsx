@@ -68,7 +68,7 @@ const TaskItemForm: React.FC<Props> = (props) => {
         padding: 10,
         marginBottom: 10,
         width: "100%",
-        backgroundColor: theme.palette.grey[100],
+        backgroundColor: theme.palette.grey.A700,
         borderRadius: 5,
       }}
     >

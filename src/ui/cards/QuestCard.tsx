@@ -1,3 +1,4 @@
+import LoopIcon from "@mui/icons-material/Loop"
 import {
   ButtonBase,
   Card,
@@ -9,6 +10,7 @@ import {
 import React, { useContext } from "react"
 import { useHistory } from "react-router"
 import { GuildContext } from "../../core/contexts/GuildContext"
+import { Weekday } from "../../core/forms/Quest.form"
 import { useDueDateInfo } from "../../core/models/DueDateInfo"
 import { QuestEntity } from "../../core/models/Quest.model"
 import { TaskEntity } from "../../core/models/Task.model"
@@ -23,6 +25,37 @@ export const QuestCard: React.FC<Props> = (props) => {
   const { guildId } = useContext(GuildContext)
   const dueDateInfo = useDueDateInfo(quest.dueDate)
   const history = useHistory()
+  let repeatText: string = ""
+
+  if (quest.recurring === "onWeekday") {
+    quest.repeatOnWeekday.forEach((weekday) => {
+      switch (weekday) {
+        case Weekday.Monday:
+          repeatText += " M"
+          break
+        case Weekday.Tuesday:
+          repeatText += " Tu"
+          break
+        case Weekday.Wednesday:
+          repeatText += " W"
+          break
+        case Weekday.Thursday:
+          repeatText += " Th"
+          break
+        case Weekday.Friday:
+          repeatText += " F"
+          break
+        case Weekday.Saturday:
+          repeatText += " Sa"
+          break
+        case Weekday.Sunday:
+          repeatText += " Su"
+          break
+      }
+    })
+  } else if (quest.recurring === "weekly") {
+    repeatText = `repeats every ${quest.repeatWeekly} weeks`
+  }
 
   return (
     <Card style={{ height: "100%", width: "100%" }}>
@@ -32,11 +65,19 @@ export const QuestCard: React.FC<Props> = (props) => {
           history.push(`/guilds/${guildId}/quests/${quest.id}`)
         }}
       >
-        <CardContent>
+        <CardContent style={{ width: "100%" }}>
           <Typography variant="h5">{quest.name}</Typography>
-          {dueDateInfo?.text && (
-            <Typography variant="body1">{`due ${dueDateInfo.text}`}</Typography>
-          )}
+          <Stack direction="row" style={{ justifyContent: "space-between" }}>
+            {quest.recurring !== "none" && (
+              <Stack direction="row" spacing={1}>
+                <LoopIcon />
+                <Typography variant="body1">{repeatText}</Typography>
+              </Stack>
+            )}
+            {!quest.isComplete && dueDateInfo?.text && (
+              <Typography variant="body1">{`due ${dueDateInfo.text}`}</Typography>
+            )}
+          </Stack>
           <Divider />
           <Stack spacing={1}>
             {quest.tasks.map((t) => (
