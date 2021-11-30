@@ -65,20 +65,27 @@ export const QuestCard: React.FC<Props> = (props) => {
           history.push(`/guilds/${guildId}/quests/${quest.id}`)
         }}
       >
-        <CardContent style={{ width: "100%" }}>
-          <Typography variant="h5">{quest.name}</Typography>
-          <Stack direction="row" style={{ justifyContent: "space-between" }}>
-            {quest.recurring !== "none" && (
-              <Stack direction="row" spacing={1}>
-                <LoopIcon />
-                <Typography variant="body1">{repeatText}</Typography>
-              </Stack>
-            )}
-            {!quest.isComplete && dueDateInfo?.text && (
-              <Typography variant="body1">{`due ${dueDateInfo.text}`}</Typography>
-            )}
-          </Stack>
-          <Divider />
+        <CardContent
+          style={{
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          <div style={{ height: 65 }}>
+            <Typography variant="h5">{quest.name}</Typography>
+            <Stack direction="row" style={{ justifyContent: "space-between" }}>
+              {quest.recurring !== "none" && (
+                <Stack direction="row" spacing={1}>
+                  <LoopIcon />
+                  <Typography variant="body1">{repeatText}</Typography>
+                </Stack>
+              )}
+              {!quest.isComplete && dueDateInfo?.text && (
+                <Typography variant="body1">{`due ${dueDateInfo.text}`}</Typography>
+              )}
+            </Stack>
+          </div>
+          <Divider style={{ marginBottom: 5 }} />
           <Stack spacing={1}>
             {quest.tasks.map((t) => (
               <TaskItem key={`quest_${quest.id}_task_${t.name}`} task={t} />

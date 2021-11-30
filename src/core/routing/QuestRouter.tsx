@@ -1,6 +1,5 @@
 import React from "react"
 import { Route, Switch, useParams, useRouteMatch } from "react-router"
-import { BrowserRouter } from "react-router-dom"
 import { AuthGate } from "../../ui/AuthGate"
 import { LoadingSpinner } from "../../ui/LoadingSpinner"
 import { UpcertQuestPage } from "../../ui/pages/quest/UpcertQuestPage"
@@ -20,16 +19,14 @@ export const QuestRouter = () => {
       <QuestProvider questId={questId}>
         <QuestContext.Consumer>
           {({ quest }) => (
-            <BrowserRouter>
-              <Switch>
-                <Route path={`${path}/update`}>
-                  <UpcertQuestPage quest={quest} />
-                </Route>
-                <Route path={path}>
-                  <ViewQuestPage />
-                </Route>
-              </Switch>
-            </BrowserRouter>
+            <Switch>
+              <Route path={`${path}/update`}>
+                <UpcertQuestPage quest={quest} />
+              </Route>
+              <Route path={path}>
+                <ViewQuestPage />
+              </Route>
+            </Switch>
           )}
         </QuestContext.Consumer>
       </QuestProvider>

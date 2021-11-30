@@ -10,8 +10,8 @@ import {
 } from "@mui/material"
 import { Formik } from "formik"
 import { DateTime } from "luxon"
-import React, { useContext, useMemo } from "react"
-import { useHistory, useParams } from "react-router"
+import React, { useContext, useMemo, useState } from "react"
+import { Redirect, useHistory, useParams } from "react-router"
 import { ApiContext } from "../../../core/contexts/ApiContext"
 import { QuestContext } from "../../../core/contexts/QuestContext"
 import { UpcertQuest } from "../../../core/forms/Quest.form"
@@ -33,6 +33,7 @@ export const UpcertQuestPage: React.FC<Props> = (props) => {
   const { questSyntheticToCurrentQuest } = useContext(QuestContext)
   const { guildId } = useParams<{ guildId?: string }>()
   const history = useHistory()
+  const [updateSuccessful, setUpdateSuccessful] = useState(false)
 
   const formSubmit = (value: UpcertQuest) => {
     if (guildId) {
@@ -49,10 +50,10 @@ export const UpcertQuestPage: React.FC<Props> = (props) => {
             }
             upcertQuest(syntheticUpdate, guildId).then((v) => {
               console.log("s+s+s+s+ synthetic success!", v)
-              history.push(`/guilds/${guildId}`)
+              setUpdateSuccessful(true)
             })
           } else {
-            history.push(`/guilds/${guildId}`)
+            setUpdateSuccessful(true)
           }
         })
         .catch((error) => {
@@ -110,6 +111,10 @@ export const UpcertQuestPage: React.FC<Props> = (props) => {
   // })
 
   const headlineText = quest ? `Editing: ${quest.name}` : "New Quest"
+
+  if (updateSuccessful) {
+    return <Redirect to={`/guilds/${guildId}`} />
+  }
 
   return (
     <Stack spacing={2}>
