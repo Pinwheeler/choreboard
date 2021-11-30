@@ -131,6 +131,11 @@ const TaskLine: React.FC<Props> = (props) => {
           Complete
         </Button>
       )}
+      {task.complete && (
+        <Button variant="contained" color="error">
+          Un-Complete
+        </Button>
+      )}
     </Stack>
   )
 }

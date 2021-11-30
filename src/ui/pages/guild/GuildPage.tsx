@@ -20,6 +20,9 @@ export const GuildPage: React.FC = () => {
         </Stack>
       </Grid>
       <Grid item xs={12}>
+        <Typography variant="h5">{`questlog.today/guilds/${guild.name}`}</Typography>
+      </Grid>
+      <Grid item xs={12}>
         <Typography style={{ marginTop: 10 }} variant="h4">
           Active Quests
         </Typography>
@@ -29,8 +32,9 @@ export const GuildPage: React.FC = () => {
           <Grid
             style={{ margin: 5 }}
             item
-            sm={12}
-            md={4}
+            xs={12}
+            md={6}
+            lg={4}
             key={`quest_card_${quest.id}`}
           >
             <QuestCard quest={quest} />
@@ -51,8 +55,9 @@ export const GuildPage: React.FC = () => {
           <Grid
             style={{ margin: 5 }}
             item
-            sm={12}
-            md={4}
+            xs={12}
+            md={6}
+            lg={4}
             key={`quest_card_${quest.id}`}
           >
             <QuestCard quest={quest} />
