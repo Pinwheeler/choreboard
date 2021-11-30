@@ -1,5 +1,9 @@
 import { User } from "@firebase/auth"
 
+export type HeroModelMap = { [key: string]: HeroModel }
+
+export type HeroMap = { [key: string]: HeroEntity }
+
 export interface HeroModel {
   name: string
   uid: string

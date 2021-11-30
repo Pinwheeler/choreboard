@@ -9,6 +9,7 @@ interface IQuestContext {
   quest: QuestEntity
   questId: string
   completeTask: (task: TaskEntity) => void
+  uncompleteTask: (task: TaskEntity) => void
 }
 
 interface Props {
@@ -19,17 +20,22 @@ export const QuestContext = React.createContext({} as IQuestContext)
 
 export const QuestProvider: React.FC<Props> = (props) => {
   const { questId } = props
-  const { guild, guildId } = useContext(GuildContext)
-  const { completeTask: completeTaskNET } = useContext(ApiContext)
+  const { guild, guildId, signedInHero } = useContext(GuildContext)
+  const { completeTask: completeTaskNET, uncompleteTask: uncompleteTaskNET } =
+    useContext(ApiContext)
 
   const quest = guild.quests[questId]
 
-  const completeTask = (task: TaskEntity) => {
-    const taskIndex = quest.tasks.findIndex((t) => t.name === task.name)
-    completeTaskNET(guildId, quest, taskIndex)
-  }
+  const taskIndex = (task: TaskEntity) =>
+    quest.tasks.findIndex((t) => t.name === task.name)
 
-  const value = { quest, questId, completeTask }
+  const completeTask = (task: TaskEntity) =>
+    completeTaskNET(guildId, quest, taskIndex(task), signedInHero)
+
+  const uncompleteTask = (task: TaskEntity) =>
+    uncompleteTaskNET(guildId, quest, taskIndex(task))
+
+  const value = { quest, questId, completeTask, uncompleteTask }
 
   if (!quest) {
     return <Redirect to={`/guilds/${guildId}`} />

@@ -5,21 +5,21 @@ export interface TaskModel {
   name: string
   dueDate?: number
   priority: number
-  complete: boolean
+  completedBy?: string //hero id
 }
 
 export class TaskEntity {
   name: string
   dueDate?: DateTime
   priority: Priority
-  complete: boolean
+  completedBy?: string // hero id
 
   toModel(): object {
     const model: { [key: string]: any } = {
       name: this.name,
       dueDate: this.dueDate?.toMillis(),
       priority: this.priority,
-      complete: this.complete,
+      completedBy: this.completedBy,
     }
     Object.entries(model).forEach(([key, value]) =>
       value === undefined ? delete model[key] : {}
@@ -33,7 +33,7 @@ export class TaskEntity {
       ? DateTime.fromMillis(model.dueDate)
       : undefined
     this.priority = model.priority as Priority
-    this.complete = model.complete
+    this.completedBy = model.completedBy
   }
 
   get isFailed() {
@@ -45,7 +45,7 @@ export class TaskEntity {
   }
 
   get isActive() {
-    if (this.complete) {
+    if (this.completedBy) {
       return false
     }
     if (this.isFailed) {

@@ -109,9 +109,9 @@ const TaskItem: React.FC<TaskProps> = (props) => {
         >
           {task.name}
         </Typography>
-        {!task.complete && <Typography>{taskInfo.priorityText}</Typography>}
+        {!task.completedBy && <Typography>{taskInfo.priorityText}</Typography>}
       </Stack>
-      {!task.complete && taskInfo.dueDateInfo && (
+      {!task.completedBy && taskInfo.dueDateInfo && (
         <Typography
           style={{ color: taskInfo.dueDateInfo.color }}
           variant="caption"

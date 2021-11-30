@@ -95,17 +95,20 @@ interface Props {
 }
 
 const TaskLine: React.FC<Props> = (props) => {
-  const { completeTask } = useContext(QuestContext)
   const { task } = props
+  const { completeTask, uncompleteTask } = useContext(QuestContext)
+  const { heroMap } = useContext(GuildContext)
+  console.log(heroMap)
+  console.log(task.completedBy)
   const theme = useTheme()
   const color = useMemo(() => {
-    if (task.complete) {
+    if (!!task.completedBy) {
       return theme.palette.success.light
     } else if (task.isFailed) {
       return theme.palette.error.light
     }
   }, [
-    task.complete,
+    task.completedBy,
     task.isFailed,
     theme.palette.error.light,
     theme.palette.success.light,
@@ -117,7 +120,7 @@ const TaskLine: React.FC<Props> = (props) => {
         color={color}
         style={{
           textDecoration:
-            task.complete || task.isFailed ? "line-through" : undefined,
+            !!task.completedBy || task.isFailed ? "line-through" : undefined,
         }}
       >
         {task.name}
@@ -131,10 +134,19 @@ const TaskLine: React.FC<Props> = (props) => {
           Complete
         </Button>
       )}
-      {task.complete && (
-        <Button variant="contained" color="error">
+      {!!task.completedBy && (
+        <Button
+          variant="contained"
+          color="error"
+          onClick={() => uncompleteTask(task)}
+        >
           Un-Complete
         </Button>
+      )}
+      {!!task.completedBy && (
+        <Typography>{`Completed by: ${
+          heroMap[task.completedBy].name
+        }`}</Typography>
       )}
     </Stack>
   )

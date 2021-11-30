@@ -14,7 +14,7 @@ export const useTaskInfo = (task: TaskEntity): TaskInfo => {
   const theme = useTheme()
 
   let color = theme.palette.text.secondary
-  if (task.complete) {
+  if (task.completedBy) {
     color = theme.palette.success.light
   }
   if (task.isFailed) {
@@ -22,7 +22,7 @@ export const useTaskInfo = (task: TaskEntity): TaskInfo => {
   }
 
   let textDecoration = undefined
-  if (task.complete) {
+  if (task.completedBy) {
     textDecoration = "line-through"
   }
 

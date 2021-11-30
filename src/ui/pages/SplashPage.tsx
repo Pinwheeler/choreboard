@@ -1,17 +1,17 @@
 import { Container, Typography } from "@mui/material"
 import * as firebaseAuth from "firebase/auth"
-import React, { useCallback, useContext, useEffect, useMemo } from "react"
+import React, { useContext, useEffect, useMemo } from "react"
+import { useAuthState } from "react-firebase-hooks/auth"
 import { Helmet } from "react-helmet"
+import { Redirect } from "react-router"
 import { FirebaseContext } from "../../core/contexts/FirebaseContext"
 
 const firebaseUIContainerID = "firebaseui-auth-container"
 
 export const SplashPage: React.FC = () => {
   const { loginUI } = useContext(FirebaseContext)
-
-  const signInSuccess = useCallback((result: any) => {
-    return false
-  }, [])
+  const { auth } = useContext(FirebaseContext)
+  const [user, loading, error] = useAuthState(auth)
 
   // Configure FirebaseUI.
   const uiConfig: firebaseui.auth.Config = useMemo(
@@ -25,12 +25,16 @@ export const SplashPage: React.FC = () => {
         firebaseAuth.EmailAuthProvider.PROVIDER_ID,
       ],
     }),
-    [signInSuccess]
+    []
   )
 
   useEffect(() => {
     loginUI.start(`#${firebaseUIContainerID}`, uiConfig)
   }, [loginUI, uiConfig])
+
+  if (user) {
+    return <Redirect to="/home" />
+  }
 
   return (
     <>

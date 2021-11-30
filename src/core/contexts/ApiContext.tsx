@@ -6,12 +6,19 @@ import {
   UpcertQuestDTO,
 } from "../forms/Quest.form"
 import { GuildModel } from "../models/Guild.model"
+import { HeroEntity } from "../models/Hero.model"
 import { QuestEntity } from "../models/Quest.model"
 import { FirebaseContext } from "./FirebaseContext"
 
 interface IApiContext {
   upcertQuest: (form: UpcertQuest, guildId: string) => Promise<void>
   completeTask: (
+    guildId: string,
+    quest: QuestEntity,
+    taskIndex: number,
+    hero: HeroEntity
+  ) => Promise<void>
+  uncompleteTask: (
     guildId: string,
     quest: QuestEntity,
     taskIndex: number
@@ -61,9 +68,21 @@ export const ApiProvider: React.FC = (props) => {
   const completeTask = (
     guildId: string,
     quest: QuestEntity,
+    taskIndex: number,
+    hero: HeroEntity
+  ) => {
+    quest.tasks[taskIndex].completedBy = hero.uid
+    const model = quest.toModel()
+    const updatePath = `guilds/${guildId}/quests/${quest.id}`
+    return set(ref(db, updatePath), model)
+  }
+
+  const uncompleteTask = (
+    guildId: string,
+    quest: QuestEntity,
     taskIndex: number
   ) => {
-    quest.tasks[taskIndex].complete = true
+    quest.tasks[taskIndex].completedBy = undefined
     const model = quest.toModel()
     const updatePath = `guilds/${guildId}/quests/${quest.id}`
     return set(ref(db, updatePath), model)
@@ -82,6 +101,7 @@ export const ApiProvider: React.FC = (props) => {
     deleteQuest,
     guilds,
     completeTask,
+    uncompleteTask,
   }
 
   return (

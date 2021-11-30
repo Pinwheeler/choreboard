@@ -71,14 +71,16 @@ export class QuestEntity {
     this.repeatWeekly = model.repeatWeekly
     this.repeatOnWeekday = model.repeatOnWeekday ?? []
     this.ownerId = model.ownerId
-    this.tasks = model.tasks.map((m) => new TaskEntity(m))
+    this.tasks = model.tasks.map((m) => {
+      return new TaskEntity(m)
+    })
     this.syntheticTo = syntheticTo
   }
 
   get isComplete() {
     let isComplete = true
     this.tasks.forEach((t) => {
-      if (!t.complete) {
+      if (!t.completedBy) {
         isComplete = false
       }
     })
@@ -105,7 +107,7 @@ export class QuestEntity {
       if (t.isActive) {
         activeTasks.push(t)
       }
-      if (t.complete) {
+      if (t.completedBy) {
         completedTasks.push(t)
       }
       if (t.isFailed) {
