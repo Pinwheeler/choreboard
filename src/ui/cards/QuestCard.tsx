@@ -13,8 +13,7 @@ import { GuildContext } from "../../core/contexts/GuildContext"
 import { Weekday } from "../../core/forms/Quest.form"
 import { useDueDateInfo } from "../../core/models/DueDateInfo"
 import { QuestEntity } from "../../core/models/Quest.model"
-import { TaskEntity } from "../../core/models/Task.model"
-import { useTaskInfo } from "../../core/models/TaskInfo"
+import { TaskItem } from "./card_components/TaskItem"
 
 interface Props {
   quest: QuestEntity
@@ -94,36 +93,5 @@ export const QuestCard: React.FC<Props> = (props) => {
         </CardContent>
       </ButtonBase>
     </Card>
-  )
-}
-
-interface TaskProps {
-  task: TaskEntity
-}
-
-const TaskItem: React.FC<TaskProps> = (props) => {
-  const { task } = props
-  const taskInfo = useTaskInfo(task)
-
-  return (
-    <Stack>
-      <Stack direction="row" spacing={2}>
-        <Typography
-          style={{
-            color: taskInfo.color,
-            textDecorationLine: taskInfo.textDecoration,
-          }}
-        >
-          {task.name}
-        </Typography>
-        {!task.completedBy && <Typography>{taskInfo.priorityText}</Typography>}
-      </Stack>
-      {!task.completedBy && taskInfo.dueDateInfo && (
-        <Typography
-          style={{ color: taskInfo.dueDateInfo.color }}
-          variant="caption"
-        >{`due ${taskInfo.dueDateInfo.text}`}</Typography>
-      )}
-    </Stack>
   )
 }

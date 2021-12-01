@@ -29,9 +29,9 @@ export const useTaskInfo = (task: TaskEntity): TaskInfo => {
 
   let priorityText = ""
   if (task.priority === Priority.high) {
-    priorityText = "high priority"
+    priorityText = "⬆"
   } else if (task.priority === Priority.low) {
-    priorityText = "low priority"
+    priorityText = "⬇"
   }
 
   return {

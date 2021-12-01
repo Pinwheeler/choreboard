@@ -69,6 +69,7 @@ const InnerComponent: React.FC<InnerProps> = (props) => {
               xs={12}
               md={5.85}
               lg={3.85}
+              xl={2}
               key={`quest_card_${quest.id}`}
             >
               <QuestCard quest={quest} />
@@ -92,6 +93,7 @@ const InnerComponent: React.FC<InnerProps> = (props) => {
               xs={12}
               md={5.85}
               lg={3.85}
+              xl={2}
               key={`quest_card_${quest.id}`}
             >
               <QuestCard quest={quest} />
