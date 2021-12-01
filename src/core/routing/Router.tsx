@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Switch } from "react-router-dom"
+import { ViewOnlyGuildPage } from "../../ui/pages/guild/ViewOnlyGuildPage"
 import { HomePage } from "../../ui/pages/HomePage"
 import { SplashPage } from "../../ui/pages/SplashPage"
 import { GuildRouter } from "./GuildRouter"
@@ -6,6 +7,9 @@ import { GuildRouter } from "./GuildRouter"
 export const Router = () => (
   <BrowserRouter>
     <Switch>
+      <Route path="/display/guilds/:guildId">
+        <ViewOnlyGuildPage />
+      </Route>
       <Route path="/guilds/:guildId">
         <GuildRouter />
       </Route>

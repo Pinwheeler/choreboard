@@ -6,6 +6,7 @@ import React from "react"
 import { RecurrenceCadence } from "../../core/forms/Quest.form"
 import { emptyUpcertTask, UpcertTask } from "../../core/forms/Task.form"
 import { Priority } from "../../core/models/Priority.model"
+import { ChallengeComponent } from "./ChallengeComponent"
 import { PriorityComponent } from "./PriorityComponent"
 import { TextField } from "./TextField"
 
@@ -117,17 +118,20 @@ const TaskItemForm: React.FC<Props> = (props) => {
           />
         </Grid>
       )}
-      <Grid item xs={12} sm={12} md={2}>
+      <Grid item xs={12} sm={12} md={1.5}>
         <PriorityComponent index={index} />
       </Grid>
-      <Grid item xs={12} sm={12} md={2}>
+      <Grid item xs={12} sm={12} md={1.5}>
+        <ChallengeComponent index={index} />
+      </Grid>
+      <Grid item xs={12} sm={12} md={1}>
         <Button
           color="error"
           variant="contained"
           style={{ width: "100%" }}
           onClick={onDelete}
         >
-          {`Delete Task #${index + 1}`}
+          Delete
         </Button>
       </Grid>
     </Grid>

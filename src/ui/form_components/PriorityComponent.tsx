@@ -1,6 +1,6 @@
 import { Rating, Stack, Typography } from "@mui/material"
 import { useField } from "formik"
-import React from "react"
+import React, { useMemo } from "react"
 import { Priority } from "../../core/models/Priority.model"
 
 interface Props {
@@ -13,31 +13,27 @@ export const PriorityComponent: React.FC<Props> = (props) => {
 
   const onChange = (_event: any, value: number | null) => {
     if (value) {
-      helper.setValue(value - 1)
+      helper.setValue(value)
     } else {
-      helper.setValue(1)
+      helper.setValue(Priority.normal)
     }
   }
 
+  const priorityText = useMemo(() => {
+    switch (field.value) {
+      case Priority.low:
+        return "Low Priority"
+      case Priority.normal:
+        return "Normal Priority"
+      case Priority.high:
+        return "High Priority"
+    }
+  }, [field.value])
+
   return (
     <Stack>
-      <Rating onChange={onChange} value={field.value + 1} max={3} />
-      <PriorityText priority={field.value} />
+      <Rating onChange={onChange} value={field.value} max={3} />
+      <Typography>{priorityText}</Typography>
     </Stack>
   )
-}
-
-const PriorityText: React.FC<{ priority?: Priority }> = (props) => {
-  const { priority } = props
-
-  switch (priority) {
-    case Priority.low:
-      return <Typography>Low Priority</Typography>
-    case Priority.normal:
-      return <Typography>Normal Priority</Typography>
-    case Priority.high:
-      return <Typography>High Priority</Typography>
-  }
-
-  return null
 }

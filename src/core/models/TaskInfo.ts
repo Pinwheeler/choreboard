@@ -1,5 +1,6 @@
 import { useTheme } from "@mui/material"
 import { DueDateInfo, useDueDateInfo } from "./DueDateInfo"
+import { Priority } from "./Priority.model"
 import { TaskEntity } from "./Task.model"
 
 export interface TaskInfo {
@@ -27,9 +28,9 @@ export const useTaskInfo = (task: TaskEntity): TaskInfo => {
   }
 
   let priorityText = ""
-  if (task.priority === 2) {
+  if (task.priority === Priority.high) {
     priorityText = "high priority"
-  } else if (task.priority === 0) {
+  } else if (task.priority === Priority.low) {
     priorityText = "low priority"
   }
 

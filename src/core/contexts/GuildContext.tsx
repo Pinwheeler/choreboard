@@ -60,15 +60,14 @@ export const GuildProvider: React.FC<Props> = (props) => {
   }, [db, guildId, heroMap, heroesPath, user])
 
   useEffect(() => {
-    if (guildId) {
-      const guildRef = ref(db, `guilds/${guildId}`)
-      onValue(guildRef, (snapshot) => {
-        const data = snapshot.val() as GuildModel
-        if (data) {
-          setGuild(new GuildEntity(data))
-        }
-      })
-    }
+    const guildRef = ref(db, `guilds/${guildId.toLowerCase()}`)
+    console.log(guildRef.toJSON())
+    onValue(guildRef, (snapshot) => {
+      const data = snapshot.val() as GuildModel
+      if (data) {
+        setGuild(new GuildEntity(data))
+      }
+    })
   }, [db, guildId])
 
   if (!guild) {
