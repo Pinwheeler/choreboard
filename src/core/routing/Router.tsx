@@ -7,7 +7,7 @@ import { GuildRouter } from "./GuildRouter"
 export const Router = () => (
   <BrowserRouter>
     <Switch>
-      <Route path="/display/guilds/:guildId">
+      <Route path="/display/:guildId">
         <ViewOnlyGuildPage />
       </Route>
       <Route path="/guilds/:guildId">
