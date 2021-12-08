@@ -23,7 +23,7 @@ export const QuestContext = React.createContext({} as IQuestContext)
 
 export const QuestProvider: React.FC<Props> = (props) => {
   const { questId } = props
-  const { guild, guildId, signedInHero } = useContext(GuildContext)
+  const { guild, guildId, signedInHero, heroMap } = useContext(GuildContext)
   const { completeTask: completeTaskNET, uncompleteTask: uncompleteTaskNET } =
     useContext(ApiContext)
   const { db } = useContext(FirebaseContext)
@@ -38,8 +38,12 @@ export const QuestProvider: React.FC<Props> = (props) => {
   const completeTask = (task: TaskEntity) =>
     completeTaskNET(guildId, quest, taskIndex(task), signedInHero)
 
-  const uncompleteTask = (task: TaskEntity) =>
-    uncompleteTaskNET(guildId, quest, taskIndex(task))
+  const uncompleteTask = (task: TaskEntity) => {
+    if (task.completedBy) {
+      const heroWhoHadCompletedIt = heroMap[task.completedBy]
+      uncompleteTaskNET(guildId, quest, taskIndex(task), heroWhoHadCompletedIt)
+    }
+  }
 
   useEffect(() => {
     if (quest.recurring !== "none") {

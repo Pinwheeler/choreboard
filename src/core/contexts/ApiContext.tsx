@@ -13,12 +13,13 @@ interface IApiContext {
     quest: QuestEntity,
     taskIndex: number,
     hero: HeroEntity
-  ) => Promise<void>
+  ) => Promise<[void, void]>
   uncompleteTask: (
     guildId: string,
     quest: QuestEntity,
-    taskIndex: number
-  ) => Promise<void>
+    taskIndex: number,
+    heroWhoHadCompletedIt: HeroEntity
+  ) => Promise<[void, void]>
   guilds: { [key: string]: GuildModel }
   deleteQuest: (
     guildId: string,
@@ -65,20 +66,31 @@ export const ApiProvider: React.FC = (props) => {
     hero: HeroEntity
   ) => {
     quest.tasks[taskIndex].completedBy = hero.uid
-    const model = quest.toModel()
-    const updatePath = `guilds/${guildId}/quests/${quest.id}`
-    return set(ref(db, updatePath), model)
+    const questModel = quest.toModel()
+    const questUpdatePath = `guilds/${guildId}/quests/${quest.id}`
+    const updateQuest = set(ref(db, questUpdatePath), questModel)
+    const heroModel = hero.toModel()
+    heroModel.coin += quest.tasks[taskIndex].coinValue
+    const heroUpdatePath = `guilds/${guildId}/active_heroes/${hero.uid}`
+    const updateHero = set(ref(db, heroUpdatePath), heroModel)
+    return Promise.all([updateQuest, updateHero])
   }
 
   const uncompleteTask = (
     guildId: string,
     quest: QuestEntity,
-    taskIndex: number
+    taskIndex: number,
+    heroWhoHadCompletedIt: HeroEntity
   ) => {
     quest.tasks[taskIndex].completedBy = undefined
     const model = quest.toModel()
     const updatePath = `guilds/${guildId}/quests/${quest.id}`
-    return set(ref(db, updatePath), model)
+    const updateQuest = set(ref(db, updatePath), model)
+    const heroModel = heroWhoHadCompletedIt.toModel()
+    heroModel.coin += quest.tasks[taskIndex].coinValue
+    const heroUpdatePath = `guilds/${guildId}/active_heroes/${heroWhoHadCompletedIt.uid}`
+    const updateHero = set(ref(db, heroUpdatePath), heroModel)
+    return Promise.all([updateQuest, updateHero])
   }
 
   useEffect(() => {

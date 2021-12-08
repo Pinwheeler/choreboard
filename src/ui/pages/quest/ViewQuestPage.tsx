@@ -35,6 +35,8 @@ export const ViewQuestPage = () => {
     )
   }
 
+  const dueInPrefix = quest.recurring === "none" ? "Due in " : "Resets in "
+
   return (
     <Stack spacing={2}>
       <Stack>
@@ -54,7 +56,12 @@ export const ViewQuestPage = () => {
             Delete
           </Button>
         </Stack>
-        {dueDateInfo && <Typography>Due in {dueDateInfo.text}</Typography>}
+        {dueDateInfo && (
+          <Typography>
+            {dueInPrefix}
+            {dueDateInfo.text}
+          </Typography>
+        )}
       </Stack>
       <Stack spacing={1}>
         {sortedTasks.activeTasks.length > 0 && (

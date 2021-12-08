@@ -3,6 +3,7 @@ import { Route, Switch, useParams, useRouteMatch } from "react-router-dom"
 import { AuthGate } from "../../ui/AuthGate"
 import { LoadingSpinner } from "../../ui/LoadingSpinner"
 import { GuildPage } from "../../ui/pages/guild/GuildPage"
+import { HeroPage } from "../../ui/pages/HeroPage"
 import { UpcertQuestPage } from "../../ui/pages/quest/UpcertQuestPage"
 import { GuildProvider } from "../contexts/GuildContext"
 import { QuestRouter } from "./QuestRouter"
@@ -24,6 +25,9 @@ export const GuildRouter = () => {
           </Route>
           <Route path={`${path}/quests/:questId`}>
             <QuestRouter />
+          </Route>
+          <Route path={`${path}/heroes/:heroId`}>
+            <HeroPage />
           </Route>
           <Route path={`${path}`}>
             <GuildPage />

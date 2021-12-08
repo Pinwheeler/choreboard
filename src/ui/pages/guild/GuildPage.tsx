@@ -31,6 +31,7 @@ interface InnerProps {
 
 const InnerComponent: React.FC<InnerProps> = (props) => {
   const { guild, guildId, viewOnly } = props
+  const { signedInHero } = useContext(GuildContext)
 
   const sortedQuests = guild.sortedQuests
 
@@ -51,6 +52,9 @@ const InnerComponent: React.FC<InnerProps> = (props) => {
                 Post New Quest!
               </Button>
             )}
+            <Button href={`/guilds/${guildId}/heroes/${signedInHero.uid}`}>
+              Hero
+            </Button>
           </Stack>
         </Grid>
         <Grid item xs={12}>
