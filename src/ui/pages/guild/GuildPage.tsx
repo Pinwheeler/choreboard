@@ -44,7 +44,7 @@ const InnerComponent: React.FC<InnerProps> = (props) => {
         <Grid item xs={12}>
           <Stack direction="row" spacing={2}>
             <Typography variant="h3">{`${guild.name} Quest Log`}</Typography>
-            {!!viewOnly && (
+            {!viewOnly && (
               <Button
                 variant="contained"
                 href={`/guilds/${guildId}/quests/new`}

@@ -27,34 +27,32 @@ export const QuestCard: React.FC<Props> = (props) => {
   let repeatText: string = ""
 
   if (quest.recurring === "onWeekday") {
-    quest.repeatOnWeekday.forEach((weekday) => {
-      switch (weekday) {
-        case Weekday.Monday:
-          repeatText += " M"
-          break
-        case Weekday.Tuesday:
-          repeatText += " Tu"
-          break
-        case Weekday.Wednesday:
-          repeatText += " W"
-          break
-        case Weekday.Thursday:
-          repeatText += " Th"
-          break
-        case Weekday.Friday:
-          repeatText += " F"
-          break
-        case Weekday.Saturday:
-          repeatText += " Sa"
-          break
-        case Weekday.Sunday:
-          repeatText += " Su"
-          break
-      }
-    })
+    if (quest.repeatOnWeekday.find((d) => d === Weekday.Monday)) {
+      repeatText += " M"
+    }
+    if (quest.repeatOnWeekday.find((d) => d === Weekday.Tuesday)) {
+      repeatText += " Tu"
+    }
+    if (quest.repeatOnWeekday.find((d) => d === Weekday.Wednesday)) {
+      repeatText += " W"
+    }
+    if (quest.repeatOnWeekday.find((d) => d === Weekday.Thursday)) {
+      repeatText += " Th"
+    }
+    if (quest.repeatOnWeekday.find((d) => d === Weekday.Friday)) {
+      repeatText += " F"
+    }
+    if (quest.repeatOnWeekday.find((d) => d === Weekday.Saturday)) {
+      repeatText += " Sa"
+    }
+    if (quest.repeatOnWeekday.find((d) => d === Weekday.Sunday)) {
+      repeatText += " Su"
+    }
   } else if (quest.recurring === "weekly") {
     repeatText = `repeats every ${quest.repeatWeekly} weeks`
   }
+
+  const duePrefix = quest.recurring === "none" ? "due" : "resets"
 
   return (
     <Card style={{ height: "100%", width: "100%" }}>
@@ -79,9 +77,10 @@ export const QuestCard: React.FC<Props> = (props) => {
                   <Typography variant="body1">{repeatText}</Typography>
                 </Stack>
               )}
-              {!quest.isComplete && dueDateInfo?.text && (
-                <Typography variant="body1">{`due ${dueDateInfo.text}`}</Typography>
-              )}
+              {(!quest.isComplete || quest.syntheticTo) &&
+                dueDateInfo?.text && (
+                  <Typography variant="body1">{`${duePrefix} ${dueDateInfo.text}`}</Typography>
+                )}
             </Stack>
           </div>
           <Divider style={{ marginBottom: 5 }} />

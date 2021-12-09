@@ -49,8 +49,11 @@ export const QuestProvider: React.FC<Props> = (props) => {
     if (quest.recurring !== "none") {
       const questRef = ref(db, `guilds/${guildId}/quests/${questId}`)
       onValue(questRef, (snapshot) => {
-        const data = snapshot.val() as QuestModel
-        setQuestSyntheticToCurrentQuest(new QuestEntity(data))
+        const data = snapshot.val()
+        if (data) {
+          const model = data as QuestModel
+          setQuestSyntheticToCurrentQuest(new QuestEntity(model))
+        }
       })
     }
   }, [db, guildId, quest.recurring, questId])
