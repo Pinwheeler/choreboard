@@ -3,13 +3,13 @@ import { Route, Switch, useParams, useRouteMatch } from "react-router-dom"
 import { AuthGate } from "../../ui/AuthGate"
 import { LoadingSpinner } from "../../ui/LoadingSpinner"
 import { GuildPage } from "../../ui/pages/guild/GuildPage"
-import { HeroPage } from "../../ui/pages/HeroPage"
+import { HeroPage } from "../../ui/pages/hero/HeroPage"
 import { UpcertQuestPage } from "../../ui/pages/quest/UpcertQuestPage"
 import { GuildProvider } from "../contexts/GuildContext"
 import { QuestRouter } from "./QuestRouter"
 
 export const GuildRouter = () => {
-  let { path, url } = useRouteMatch()
+  let { path } = useRouteMatch()
   const { guildId } = useParams<{ guildId?: string }>()
 
   if (!guildId) {
