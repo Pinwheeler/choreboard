@@ -22,7 +22,6 @@ export const AppContainer: React.FC = (props) => {
       </Helmet>
       <Paper
         style={{
-          padding: 15,
           backgroundColor: theme.palette.background.default,
         }}
       >

@@ -6,6 +6,9 @@ export const themeOptions: ThemeOptions = {
     primary: {
       main: "#0f0",
     },
+    secondary: {
+      main: "#00008b",
+    },
     background: {
       default: "#111111",
       paper: "#212121",
@@ -38,6 +41,9 @@ export const themeOptions: ThemeOptions = {
     },
     subtitle1: {
       fontFamily: "Ubuntu Mono",
+      fontWeight: "900",
+      color: "#00008b",
+      fontSize: 20,
     },
     subtitle2: {
       fontFamily: "Ubuntu Mono",
@@ -45,6 +51,7 @@ export const themeOptions: ThemeOptions = {
     button: {
       fontFamily: "Ubuntu Mono",
       fontWeight: 900,
+      color: "#00008b",
     },
     overline: {
       fontFamily: "Ubuntu Mono",

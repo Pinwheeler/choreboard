@@ -1,9 +1,18 @@
-import { Button, Grid, Stack, Typography } from "@mui/material"
+import { AddCircle } from "@mui/icons-material"
+import {
+  Button,
+  Grid,
+  IconButton,
+  Stack,
+  Typography,
+  useTheme,
+} from "@mui/material"
 import { useContext } from "react"
 import { Helmet } from "react-helmet"
 import { GuildContext } from "../../../core/contexts/GuildContext"
 import { ViewOnlyGuildContext } from "../../../core/contexts/ViewOnlyGuildContext"
 import { GuildEntity } from "../../../core/models/Guild.model"
+import coinIcon from "../../assets/coin.png"
 import { QuestCard } from "../../cards/QuestCard"
 
 interface Props {
@@ -39,6 +48,7 @@ const InnerComponent: React.FC<InnerProps> = (props) => {
   const { guild, guildId, viewOnly } = props
   const { signedInHero } = useContext(GuildContext)
 
+  const theme = useTheme()
   const sortedQuests = guild.sortedQuests
 
   return (
@@ -46,23 +56,37 @@ const InnerComponent: React.FC<InnerProps> = (props) => {
       <Helmet>
         <title>{`Quest Log - ${guild.name}`}</title>
       </Helmet>
+      {!viewOnly && (
+        <Grid
+          container
+          style={{ padding: 5, backgroundColor: theme.palette.primary.main }}
+        >
+          <Grid item xs={11}>
+            <Button href={`/guilds/${guildId}/heroes/${signedInHero.uid}`}>
+              <Typography variant="subtitle1">{signedInHero.coin}</Typography>
+              <img
+                src={coinIcon}
+                alt="coin icon"
+                style={{ width: 22, height: 22 }}
+              />
+              <div style={{ width: 8 }} />
+              <Typography variant="subtitle1">{signedInHero.name}</Typography>
+            </Button>
+          </Grid>
+          <Grid item xs={1}>
+            <IconButton
+              color="secondary"
+              href={`/guilds/${guildId}/quests/new`}
+            >
+              <AddCircle />
+            </IconButton>
+          </Grid>
+        </Grid>
+      )}
       <Grid container style={{ padding: 5 }}>
         <Grid item xs={12}>
           <Stack direction="row" spacing={2}>
             <Typography variant="h3">{`${guild.name} Quest Log`}</Typography>
-            {!viewOnly && (
-              <Button
-                variant="contained"
-                href={`/guilds/${guildId}/quests/new`}
-              >
-                Post New Quest!
-              </Button>
-            )}
-            {!viewOnly && (
-              <Button href={`/guilds/${guildId}/heroes/${signedInHero.uid}`}>
-                Hero
-              </Button>
-            )}
           </Stack>
         </Grid>
         <Grid item xs={12}>

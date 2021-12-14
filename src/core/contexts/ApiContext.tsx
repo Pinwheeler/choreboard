@@ -56,6 +56,11 @@ export const ApiProvider: React.FC = (props) => {
   ) => {
     const path = pathForQuest(guildId, recurring, questId)
     const questRef = ref(db, path)
+    if (recurring) {
+      const syntheticPath = pathForQuest(guildId, false, questId)
+      const syntheticRef = ref(db, syntheticPath)
+      remove(syntheticRef)
+    }
     return remove(questRef)
   }
 
