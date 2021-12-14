@@ -17,7 +17,13 @@ export const GuildPage: React.FC<Props> = (props) => {
     useContext(ViewOnlyGuildContext)
 
   if (viewOnly) {
-    return <InnerComponent guild={viewOnlyGuild} guildId={viewOnlyGuildId} />
+    return (
+      <InnerComponent
+        guild={viewOnlyGuild}
+        viewOnly
+        guildId={viewOnlyGuildId}
+      />
+    )
   } else {
     return <InnerComponent guild={guild} guildId={guildId} />
   }
@@ -52,9 +58,11 @@ const InnerComponent: React.FC<InnerProps> = (props) => {
                 Post New Quest!
               </Button>
             )}
-            <Button href={`/guilds/${guildId}/heroes/${signedInHero.uid}`}>
-              Hero
-            </Button>
+            {!viewOnly && (
+              <Button href={`/guilds/${guildId}/heroes/${signedInHero.uid}`}>
+                Hero
+              </Button>
+            )}
           </Stack>
         </Grid>
         <Grid item xs={12}>

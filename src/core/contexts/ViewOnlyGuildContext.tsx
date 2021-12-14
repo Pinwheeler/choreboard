@@ -24,7 +24,6 @@ export const ViewOnlyGuildProvider: React.FC<Props> = (props) => {
 
   useEffect(() => {
     const guildRef = ref(db, `guilds/${guildId.toLowerCase()}`)
-    console.log(guildRef.toJSON())
     onValue(
       guildRef,
       (snapshot) => {
