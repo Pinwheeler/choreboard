@@ -1,12 +1,5 @@
 import { AddCircle } from "@mui/icons-material"
-import {
-  Button,
-  Grid,
-  IconButton,
-  Stack,
-  Typography,
-  useTheme,
-} from "@mui/material"
+import { Button, Grid, Stack, Typography, useTheme } from "@mui/material"
 import { useContext } from "react"
 import { Helmet } from "react-helmet"
 import { GuildContext } from "../../../core/contexts/GuildContext"
@@ -61,7 +54,7 @@ const InnerComponent: React.FC<InnerProps> = (props) => {
           container
           style={{ padding: 5, backgroundColor: theme.palette.primary.main }}
         >
-          <Grid item xs={11}>
+          <Grid item xs={9}>
             <Button href={`/guilds/${guildId}/heroes/${signedInHero.uid}`}>
               <Typography variant="subtitle1">{signedInHero.coin}</Typography>
               <img
@@ -73,13 +66,12 @@ const InnerComponent: React.FC<InnerProps> = (props) => {
               <Typography variant="subtitle1">{signedInHero.name}</Typography>
             </Button>
           </Grid>
-          <Grid item xs={1}>
-            <IconButton
-              color="secondary"
-              href={`/guilds/${guildId}/quests/new`}
-            >
+          <Grid item xs={3}>
+            <Button color="secondary" href={`/guilds/${guildId}/quests/new`}>
+              Post new quest
+              <div style={{ width: 8 }} />
               <AddCircle />
-            </IconButton>
+            </Button>
           </Grid>
         </Grid>
       )}

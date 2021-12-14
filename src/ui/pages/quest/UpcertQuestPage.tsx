@@ -94,22 +94,6 @@ export const UpcertQuestPage: React.FC<Props> = (props) => {
 
   const theme = useTheme()
 
-  // const validationSchema = yup.object({
-  //   name: yup.string().required("Name is required"),
-  //   dueDate: yup.string(),
-  //   recurring: yup.string().matches(/none|weekly|onWeekday/),
-  //   repeatWeekly: yup.number(),
-  //   repeatOnWeekday: yup.array(),
-  //   owner: yup.object({}),
-  //   tasks: yup.array().of(
-  //     yup.object({
-  //       name: yup.string().required(),
-  //       dueDate: yup.string(),
-  //       priority: yup.number(),
-  //     })
-  //   ),
-  // })
-
   const headlineText = quest ? `Editing: ${quest.name}` : "New Quest"
 
   if (updateSuccessful) {
