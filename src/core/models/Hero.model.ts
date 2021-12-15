@@ -6,14 +6,14 @@ export type HeroModelMap = { [key: string]: HeroModel }
 export type HeroMap = { [key: string]: HeroEntity }
 
 export interface HeroModel {
-  title?: string
-  heroName?: string
+  title: string | null
+  heroName: string | null
   initials: string
   name: string
   uid: string
   coin: number
-  inventory: ItemModel[]
-  equipped: EquippedItems
+  inventory: ItemModel[] | null
+  equipped: EquippedItems | null
 }
 
 export interface EquippedItems {
@@ -26,7 +26,7 @@ export interface EquippedItems {
   shield?: ItemModel
 }
 
-const blankEquip = () => ({
+export const blankEquip = () => ({
   head: undefined,
   torso: undefined,
   hands: undefined,
@@ -43,31 +43,31 @@ export class HeroEntity {
   name: string
   uid: string
   coin: number
-  inventory: ItemModel[]
-  equipped: EquippedItems
+  inventory?: ItemModel[]
+  equipped?: EquippedItems
 
   toModel(): HeroModel {
     return {
-      title: this.title,
-      heroName: this.heroName,
+      title: this.title ?? null,
+      heroName: this.heroName ?? null,
       initials: this.initials,
       name: this.name,
       uid: this.uid,
       coin: this.coin,
-      inventory: this.inventory,
-      equipped: this.equipped,
+      inventory: this.inventory ?? null,
+      equipped: this.equipped ?? null,
     }
   }
 
   constructor(model: HeroModel) {
-    this.title = model.title
-    this.heroName = model.heroName
+    this.title = model.title ?? undefined
+    this.heroName = model.heroName ?? undefined
     this.initials = model.initials
     this.name = model.name
     this.uid = model.uid
     this.coin = model.coin
-    this.inventory = model.inventory ?? []
-    this.equipped = model.equipped ?? blankEquip()
+    this.inventory = model.inventory ?? undefined
+    this.equipped = model.equipped ?? undefined
   }
 
   static fromUser(user: User) {
@@ -77,12 +77,18 @@ export class HeroEntity {
       .reduce((response, word) => (response += word.slice(0, 1)), "")
       .toUpperCase()
     return new HeroEntity({
+      title: null,
+      heroName: null,
       initials,
       name: user.displayName ?? user.email ?? "Anon",
       uid: user.uid,
       coin: 0,
-      inventory: [],
-      equipped: blankEquip(),
+      inventory: null,
+      equipped: null,
     })
+  }
+
+  get displayName() {
+    return this.heroName ?? this.name
   }
 }

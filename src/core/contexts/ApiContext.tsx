@@ -75,6 +75,9 @@ export const ApiProvider: React.FC = (props) => {
     const questUpdatePath = `guilds/${guildId}/quests/${quest.id}`
     const updateQuest = set(ref(db, questUpdatePath), questModel)
     const heroModel = hero.toModel()
+    console.log(
+      `hero ${hero.displayName} should get ${quest.tasks[taskIndex].coinValue} coins`
+    )
     heroModel.coin += quest.tasks[taskIndex].coinValue
     const heroUpdatePath = `guilds/${guildId}/active_heroes/${hero.uid}`
     const updateHero = set(ref(db, heroUpdatePath), heroModel)
@@ -92,7 +95,10 @@ export const ApiProvider: React.FC = (props) => {
     const updatePath = `guilds/${guildId}/quests/${quest.id}`
     const updateQuest = set(ref(db, updatePath), model)
     const heroModel = heroWhoHadCompletedIt.toModel()
-    heroModel.coin += quest.tasks[taskIndex].coinValue
+    console.log(
+      `hero ${heroWhoHadCompletedIt.displayName} should lose ${quest.tasks[taskIndex].coinValue} coins`
+    )
+    heroModel.coin -= quest.tasks[taskIndex].coinValue
     const heroUpdatePath = `guilds/${guildId}/active_heroes/${heroWhoHadCompletedIt.uid}`
     const updateHero = set(ref(db, heroUpdatePath), heroModel)
     return Promise.all([updateQuest, updateHero])

@@ -4,6 +4,7 @@ import React, { useContext } from "react"
 import { useParams } from "react-router-dom"
 import { GuildContext } from "../../../core/contexts/GuildContext"
 import { UpdateHero } from "../../../core/forms/Hero.form"
+import { blankEquip } from "../../../core/models/Hero.model"
 import { LoadingSpinner } from "../../LoadingSpinner"
 import { Avatar } from "./components/Avatar"
 import { Store } from "./components/Store"
@@ -26,8 +27,8 @@ export const HeroPage: React.FC = () => {
     initials: hero.initials,
     id: hero.uid,
     coin: hero.coin,
-    inventory: hero.inventory,
-    equipped: hero.equipped,
+    inventory: hero.inventory ?? [],
+    equipped: hero.equipped ?? blankEquip(),
   }
 
   return (
