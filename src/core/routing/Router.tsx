@@ -1,17 +1,22 @@
 import { BrowserRouter, Route, Switch } from "react-router-dom"
-import { ViewOnlyGuildPage } from "../../ui/pages/guild/ViewOnlyGuildPage"
+import { GuildPage } from "../../ui/pages/guild/GuildPage"
 import { HomePage } from "../../ui/pages/HomePage"
 import { SplashPage } from "../../ui/pages/SplashPage"
-import { GuildRouter } from "./GuildRouter"
+import { GuildProvider } from "../contexts/GuildContext"
+import { SignedInRouter } from "./SignedInRouter"
 
 export const Router = () => (
   <BrowserRouter>
     <Switch>
       <Route path="/display/:guildId">
-        <ViewOnlyGuildPage />
+        <GuildProvider>
+          <GuildPage viewOnly />
+        </GuildProvider>
       </Route>
       <Route path="/guilds/:guildId">
-        <GuildRouter />
+        <GuildProvider>
+          <SignedInRouter />
+        </GuildProvider>
       </Route>
       <Route path="/home">
         <HomePage />

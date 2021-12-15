@@ -84,7 +84,7 @@ export const QuestCard: React.FC<Props> = (props) => {
             </Stack>
           </div>
           <Divider style={{ marginBottom: 5 }} />
-          <Stack spacing={1}>
+          <Stack spacing={0.3}>
             {quest.tasks.map((t) => (
               <TaskItem key={`quest_${quest.id}_task_${t.name}`} task={t} />
             ))}

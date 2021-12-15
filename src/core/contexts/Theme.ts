@@ -21,6 +21,7 @@ export const themeOptions: ThemeOptions = {
   },
   typography: {
     fontFamily: "Open Sans",
+    fontSize: 12,
     h1: {
       fontFamily: "Ubuntu Mono",
     },

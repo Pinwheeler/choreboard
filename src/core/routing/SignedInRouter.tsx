@@ -1,24 +1,18 @@
 import React from "react"
-import { Route, Switch, useParams, useRouteMatch } from "react-router-dom"
+import { Route, Switch, useRouteMatch } from "react-router"
 import { AuthGate } from "../../ui/AuthGate"
-import { LoadingSpinner } from "../../ui/LoadingSpinner"
 import { GuildPage } from "../../ui/pages/guild/GuildPage"
 import { HeroPage } from "../../ui/pages/hero/HeroPage"
 import { UpcertQuestPage } from "../../ui/pages/quest/UpcertQuestPage"
-import { GuildProvider } from "../contexts/GuildContext"
+import { SignedInProvider } from "../contexts/SignedInContext"
 import { QuestRouter } from "./QuestRouter"
 
-export const GuildRouter = () => {
+export const SignedInRouter = () => {
   let { path } = useRouteMatch()
-  const { guildId } = useParams<{ guildId?: string }>()
-
-  if (!guildId) {
-    return <LoadingSpinner whatIsLoading="GuildID for GuildRouter" />
-  }
 
   return (
     <AuthGate>
-      <GuildProvider guildId={guildId}>
+      <SignedInProvider>
         <Switch>
           <Route path={`${path}/quests/new`}>
             <UpcertQuestPage />
@@ -33,7 +27,7 @@ export const GuildRouter = () => {
             <GuildPage />
           </Route>
         </Switch>
-      </GuildProvider>
+      </SignedInProvider>
     </AuthGate>
   )
 }

@@ -1,6 +1,6 @@
-import { onValue, ref, set } from "@firebase/database"
+import { onValue, ref } from "@firebase/database"
 import React, { useContext, useEffect, useMemo, useState } from "react"
-import { AuthContext } from "../../ui/AuthGate"
+import { useParams } from "react-router-dom"
 import { LoadingSpinner } from "../../ui/LoadingSpinner"
 import { GuildEntity, GuildModel } from "../models/Guild.model"
 import { HeroEntity, HeroMap, HeroModelMap } from "../models/Hero.model"
@@ -9,20 +9,15 @@ import { FirebaseContext } from "./FirebaseContext"
 interface IGuildContext {
   guild: GuildEntity
   guildId: string
-  signedInHero: HeroEntity
   heroMap: HeroMap
-}
-
-interface Props {
-  guildId: string
 }
 
 export const GuildContext = React.createContext({} as IGuildContext)
 
-export const GuildProvider: React.FC<Props> = (props) => {
-  const { guildId } = props
+export const GuildProvider: React.FC = (props) => {
+  const { guildId } = useParams<{ guildId?: string }>()
   const { db } = useContext(FirebaseContext)
-  const { user } = useContext(AuthContext)
+
   const [guild, setGuild] = useState<GuildEntity>()
   const [heroMap, setHeroMap] = useState<HeroMap>()
 
@@ -46,35 +41,24 @@ export const GuildProvider: React.FC<Props> = (props) => {
     }
   }, [db, heroesPath])
 
-  const signedInHero = useMemo(() => {
-    if (heroMap && user && guildId) {
-      const hero = heroMap[user.uid]
-      if (hero) {
-        return hero
-      } else {
-        const entity = HeroEntity.fromUser(user)
-        set(ref(db, `${heroesPath}/${user.uid}`), entity.toModel())
-      }
-    }
-    return undefined
-  }, [db, guildId, heroMap, heroesPath, user])
-
   useEffect(() => {
-    const guildRef = ref(db, `guilds/${guildId.toLowerCase()}`)
-    onValue(guildRef, (snapshot) => {
-      const data = snapshot.val() as GuildModel
-      if (data) {
-        setGuild(new GuildEntity(data))
-      }
-    })
+    if (guildId) {
+      const guildRef = ref(db, `guilds/${guildId.toLowerCase()}`)
+      onValue(guildRef, (snapshot) => {
+        const data = snapshot.val() as GuildModel
+        if (data) {
+          setGuild(new GuildEntity(data))
+        }
+      })
+    }
   }, [db, guildId])
+
+  if (!guildId) {
+    return <LoadingSpinner whatIsLoading="Guild Id" />
+  }
 
   if (!guild) {
     return <LoadingSpinner whatIsLoading={`Guild data for guild: ${guildId}`} />
-  }
-
-  if (!signedInHero) {
-    return <LoadingSpinner whatIsLoading={"Hero needs to sign in"} />
   }
 
   if (!heroMap) {
@@ -84,7 +68,6 @@ export const GuildProvider: React.FC<Props> = (props) => {
   const value = {
     guild,
     guildId,
-    signedInHero,
     heroMap,
   }
 

@@ -53,8 +53,11 @@ const TaskItemForm: React.FC<Props> = (props) => {
   }
 
   const onDelete = () => {
+    console.log("old array", tasksField.value)
     const updatedList = [...tasksField.value]
+    console.log("removing item at index", index)
     updatedList.splice(index, 1)
+    console.log("new array", updatedList)
     tasksHelper.setValue(updatedList)
   }
 
@@ -81,7 +84,7 @@ const TaskItemForm: React.FC<Props> = (props) => {
           style={{ width: "100%" }}
           name={`tasks[${index}].name`}
           label="Task Name"
-          defaultValue={tasksField.value[index].name}
+          value={tasksField.value[index].name}
         />
       </Grid>
       {recurringField.value === "none" && (
@@ -95,7 +98,7 @@ const TaskItemForm: React.FC<Props> = (props) => {
                 name={`tasks[${index}].dueDateDate`}
                 {...props}
                 label="Deadline*"
-                defaultValue={tasksField.value[index].dueDate}
+                value={tasksField.value[index].dueDate}
               />
             )}
           />
@@ -112,7 +115,7 @@ const TaskItemForm: React.FC<Props> = (props) => {
                 name={`tasks[${index}].dueDateTime`}
                 {...props}
                 label="Deadline*"
-                defaultValue={tasksField.value[index].dueDate}
+                value={tasksField.value[index].dueDate}
               />
             )}
           />

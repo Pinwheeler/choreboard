@@ -3,10 +3,10 @@ import { Button, Grid, Stack, Typography, useTheme } from "@mui/material"
 import { useContext } from "react"
 import { Helmet } from "react-helmet"
 import { GuildContext } from "../../../core/contexts/GuildContext"
-import { ViewOnlyGuildContext } from "../../../core/contexts/ViewOnlyGuildContext"
-import { GuildEntity } from "../../../core/models/Guild.model"
-import coinIcon from "../../assets/coin.png"
+import { SignedInContext } from "../../../core/contexts/SignedInContext"
 import { QuestCard } from "../../cards/QuestCard"
+import { CoinIcon } from "../../CoinIcon"
+import { PartyBanner } from "./PartyBanner"
 
 interface Props {
   viewOnly?: boolean
@@ -15,31 +15,10 @@ interface Props {
 export const GuildPage: React.FC<Props> = (props) => {
   const { viewOnly } = props
   const { guild, guildId } = useContext(GuildContext)
-  const { guild: viewOnlyGuild, guildId: viewOnlyGuildId } =
-    useContext(ViewOnlyGuildContext)
 
-  if (viewOnly) {
-    return (
-      <InnerComponent
-        guild={viewOnlyGuild}
-        viewOnly
-        guildId={viewOnlyGuildId}
-      />
-    )
-  } else {
-    return <InnerComponent guild={guild} guildId={guildId} />
-  }
-}
-
-interface InnerProps {
-  guild: GuildEntity
-  guildId: string
-  viewOnly?: boolean
-}
-
-const InnerComponent: React.FC<InnerProps> = (props) => {
-  const { guild, guildId, viewOnly } = props
-  const { signedInHero } = useContext(GuildContext)
+  const { heroMap } = useContext(GuildContext)
+  const { signedInHero } = useContext(SignedInContext)
+  const heroes = Object.values(heroMap)
 
   const theme = useTheme()
   const sortedQuests = guild.sortedQuests
@@ -57,11 +36,7 @@ const InnerComponent: React.FC<InnerProps> = (props) => {
           <Grid item xs={9}>
             <Button href={`/guilds/${guildId}/heroes/${signedInHero.uid}`}>
               <Typography variant="subtitle1">{signedInHero.coin}</Typography>
-              <img
-                src={coinIcon}
-                alt="coin icon"
-                style={{ width: 22, height: 22 }}
-              />
+              <CoinIcon />
               <div style={{ width: 8 }} />
               <Typography variant="subtitle1">{signedInHero.name}</Typography>
             </Button>
@@ -75,7 +50,13 @@ const InnerComponent: React.FC<InnerProps> = (props) => {
           </Grid>
         </Grid>
       )}
+
       <Grid container style={{ padding: 5 }}>
+        {viewOnly && (
+          <Grid item xs={12}>
+            <PartyBanner heroes={heroes} />
+          </Grid>
+        )}
         <Grid item xs={12}>
           <Stack direction="row" spacing={2}>
             <Typography variant="h3">{`${guild.name} Quest Log`}</Typography>

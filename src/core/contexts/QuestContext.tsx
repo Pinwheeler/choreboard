@@ -6,6 +6,7 @@ import { TaskEntity } from "../models/Task.model"
 import { ApiContext } from "./ApiContext"
 import { FirebaseContext } from "./FirebaseContext"
 import { GuildContext } from "./GuildContext"
+import { SignedInContext } from "./SignedInContext"
 
 interface IQuestContext {
   quest: QuestEntity
@@ -23,7 +24,8 @@ export const QuestContext = React.createContext({} as IQuestContext)
 
 export const QuestProvider: React.FC<Props> = (props) => {
   const { questId } = props
-  const { guild, guildId, signedInHero, heroMap } = useContext(GuildContext)
+  const { guild, guildId, heroMap } = useContext(GuildContext)
+  const { signedInHero } = useContext(SignedInContext)
   const { completeTask: completeTaskNET, uncompleteTask: uncompleteTaskNET } =
     useContext(ApiContext)
   const { db } = useContext(FirebaseContext)

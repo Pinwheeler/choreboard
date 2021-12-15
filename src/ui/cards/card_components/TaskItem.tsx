@@ -2,7 +2,7 @@ import { Grid, Stack, Typography } from "@mui/material"
 import React from "react"
 import { TaskEntity } from "../../../core/models/Task.model"
 import { useTaskInfo } from "../../../core/models/TaskInfo"
-import coinIcon from "../../assets/coin.png"
+import { CoinIcon } from "../../CoinIcon"
 
 interface TaskProps {
   task: TaskEntity
@@ -17,11 +17,7 @@ export const TaskItem: React.FC<TaskProps> = (props) => {
       <Grid item xs={1.2}>
         <Stack direction="row" spacing={0.25}>
           <Typography>{task.coinValue}</Typography>
-          <img
-            src={coinIcon}
-            alt="coin icon"
-            style={{ width: 20, height: 20 }}
-          />
+          <CoinIcon />
         </Stack>
       </Grid>
       <Grid
