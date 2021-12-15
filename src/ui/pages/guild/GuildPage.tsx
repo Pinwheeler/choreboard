@@ -29,34 +29,28 @@ export const GuildPage: React.FC<Props> = (props) => {
         <title>{`Quest Log - ${guild.name}`}</title>
       </Helmet>
       {!viewOnly && (
-        <Grid
-          container
+        <Stack
+          justifyContent="space-between"
+          alignItems="center"
+          direction="row"
           style={{ padding: 5, backgroundColor: theme.palette.primary.main }}
         >
-          <Grid item xs={9}>
-            <Button href={`/guilds/${guildId}/heroes/${signedInHero.uid}`}>
-              <Typography variant="subtitle1">{signedInHero.coin}</Typography>
-              <CoinIcon />
-              <div style={{ width: 8 }} />
-              <Typography variant="subtitle1">{signedInHero.name}</Typography>
-            </Button>
-          </Grid>
-          <Grid item xs={3}>
-            <Button color="secondary" href={`/guilds/${guildId}/quests/new`}>
-              Post new quest
-              <div style={{ width: 8 }} />
-              <AddCircle />
-            </Button>
-          </Grid>
-        </Grid>
+          <Button href={`/guilds/${guildId}/heroes/${signedInHero.uid}`}>
+            <Typography variant="subtitle1">{signedInHero.coin}</Typography>
+            <CoinIcon />
+            <div style={{ width: 8 }} />
+            <Typography variant="subtitle1">{signedInHero.name}</Typography>
+          </Button>
+
+          <Button color="secondary" href={`/guilds/${guildId}/quests/new`}>
+            Post new quest
+            <div style={{ width: 8 }} />
+            <AddCircle />
+          </Button>
+        </Stack>
       )}
 
       <Grid container style={{ padding: 5 }}>
-        {viewOnly && (
-          <Grid item xs={12}>
-            <PartyBanner heroes={heroes} />
-          </Grid>
-        )}
         <Grid item xs={12}>
           <Stack direction="row" spacing={2}>
             <Typography variant="h3">{`${guild.name} Quest Log`}</Typography>
@@ -65,6 +59,11 @@ export const GuildPage: React.FC<Props> = (props) => {
         <Grid item xs={12}>
           <Typography variant="h5">{`questlog.today/guilds/${guild.name}`}</Typography>
         </Grid>
+        {viewOnly && (
+          <Grid item xs={12}>
+            <PartyBanner heroes={heroes} />
+          </Grid>
+        )}
         <Grid item xs={12}>
           <Typography style={{ marginTop: 10 }} variant="h4">
             Active Quests
