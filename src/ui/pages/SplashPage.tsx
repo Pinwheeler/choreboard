@@ -1,6 +1,7 @@
 import { Container, Typography } from "@mui/material"
 import * as firebaseAuth from "firebase/auth"
 import React, { useContext, useEffect, useMemo } from "react"
+import { isEmbedded } from "react-device-detect"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { Helmet } from "react-helmet"
 import { Redirect } from "react-router"
@@ -31,6 +32,19 @@ export const SplashPage: React.FC = () => {
   useEffect(() => {
     loginUI.start(`#${firebaseUIContainerID}`, uiConfig)
   }, [loginUI, uiConfig])
+
+  if (isEmbedded) {
+    return (
+      <Container>
+        <Typography variant="h1">QuestLog</Typography>
+        <Typography>
+          It appears that you're using an embedded browser. Google OAuth does
+          not work with embedded browsers. Please switch to your system browser
+          instead.
+        </Typography>
+      </Container>
+    )
+  }
 
   if (user) {
     return <Redirect to="/home" />
